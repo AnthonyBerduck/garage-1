@@ -8,6 +8,7 @@
 
   <body>
     <h1> Page de connexion </h1>
+    <?php echo $contenuAffichage ?>
   </body>
 
 </html>

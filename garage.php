@@ -1,8 +1,23 @@
 <?php
-  try{
-    include("controleur/controleur.php");
-  }
-  catch(PDOException $e) {
-    $msg = 'ERREUR PDO Ligne' . $e->getLine() . ' : ' . $e->getMessage() ;
-    exit($msg);
-  }
+
+require_once('controleur/controleur.php');
+require_once('vue/vue.php');
+
+try{
+    if(isset($_POST['afficherClient'])){
+        ctlAfficherClient();
+    } else if (isset($_POST['ajouterClient'])) {
+
+        ctlAjouterClient($_POST['nom'],$_POST['prenom'],$_POST['date'],$_POST['tel']);
+
+    }else if (isset($_POST['supprimerClient'])){
+        ctlSupprimerClient();
+    } else if(isset($_POST['chercherClient'])){
+        ctlChercherClient($_POST['search']);
+    }else{
+        ctlConnexion();
+    }
+
+}catch (Exception $e){
+    ctlErreur($e);
+}
