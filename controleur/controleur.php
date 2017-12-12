@@ -11,8 +11,21 @@
     }
   }
 
-  function ctlSAjouterEmploye($)
+  function ctlAjouterEmploye($nomEmp,$login,$mdp,$categorie){
+    if(!empty($nomEmp) && !empty($login) && !empty($mdp) && !empty($categorie)){
+      ajouterEmploye($nomEmp,$login,$mdp,$categorie);
+    }
+    else {
+      throw new Exception("Un ou plusieurs champs sont incorrects");
+    }
+  }
 
   function ctlErreur($erreur){
     afficherErreur($erreur);
+
+  function ctlConnexion(){
+    if(!empty($_POST['login'] && !empty($_POST['psw'])){
+      connexion();
+    }
+
   }
