@@ -20,6 +20,15 @@
     }
   }
 
+  function ctlChercherUnClient($nom){
+    if(!empty($nom)){
+      chercherUnClient($nom);
+    }
+    else{
+      throw new Exception("Le champ est invalide");
+    }
+  }
+
   function ctlErreur($erreur){
     afficherErreur($erreur);
 
