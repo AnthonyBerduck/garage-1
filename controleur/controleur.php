@@ -6,29 +6,29 @@ function ctlConnexion(){
   if(!empty($_POST['login']) && !empty($_POST['psw'])){
     $resultat = chercherTousLesEmployes();
     foreach ($resultat as $ligne){
-      if( $ligne->login == $_POST['login'] && $ligne->password == $_POST['psw']){
-        if( $ligne->categorie == 'agent'){
-          afficherAgent($ligne);
-          break;
-        }else if( $ligne->categorie == 'mecanicien'){
-          afficherMecanicien($ligne);
-          break;
-        }else if( $ligne->categorie == 'directeur'){
-          afficherDirecteur($ligne);
-          break;
+      if($ligne->login == $_POST['login'] && $ligne->password == $_POST['psw']){
+        $cat='$ligne->categorie';
+        switch ($cat) {}
+          case 'agent':
+            afficherAgent($ligne);
+            break;
+          case 'mecanicien':
+            afficherMecanicien($ligne);
+            break;
+          default:
+            afficherDirecteur($ligne);
         }
       }
     }
-    throw new Exception("Login et/ou password invalides");
   }else{
-    throw new Exception("Champs invalides");
+    throw new Exception("Login et/ou pwd invalides");
   }
 }
 
-function ctlAfficherConnexion(){
-  afficherConnexion();
-}
 
+function ctlAccueil(){
+  afficherAccueil();
+}
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
   if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
@@ -45,6 +45,15 @@ function ctlAjouterEmploye($nomEmp,$login,$mdp,$categorie){
   }
   else {
     throw new Exception("Un ou plusieurs champs sont incorrects");
+  }
+}
+
+function ctlSupprimerEmploye($login,$mdp){
+  if(!empty($login) && !empty($mdp)){
+    supprimerEmploye($login,$mdp);
+  }
+  else{
+    throw new Exception("Champs invalides");
   }
 }
 
