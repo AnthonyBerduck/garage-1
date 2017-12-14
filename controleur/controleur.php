@@ -8,11 +8,11 @@ function ctlConnexion(){
     foreach ($resultat as $ligne){
       if($ligne->login == $_POST['login'] && $ligne->password == $_POST['psw']){
         $cat='$ligne->categorie';
-        switch ($cat) {}
-          case 'agent':
+        switch ($cat) {
+          case "agent":
             afficherAgent($ligne);
             break;
-          case 'mecanicien':
+          case "mecanicien":
             afficherMecanicien($ligne);
             break;
           default:
