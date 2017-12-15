@@ -13,7 +13,7 @@ Mécaniciens :
 
 Directeur :
 
-créer, supprimer, modifier logins et mot de passe() -> agent, mécanicien, directeur 
+créer, supprimer, modifier logins et mot de passe() -> agent, mécanicien, directeur </br>
 créer, supprimer, modifier -> liste des interventions possibles dans le garage 
 créer, supprimer, modifier -> liste des élements que le client doit fournir pour chaque intervention
 
