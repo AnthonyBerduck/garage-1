@@ -81,5 +81,5 @@ function ctlErreur($erreur){
 }
 
 function ctlAfficherPageAgent(){
-	afficherPageAgent();
+	afficherAgent();
 }

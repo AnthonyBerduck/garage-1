@@ -10,12 +10,12 @@ function afficherAccueil(){
   require_once("gabarit.php");
 }
 
-function afficherPageDirecteur($directeur){
+function afficherDirecteur($directeur){
   $contenuAffichage='CONNECTE TRUMP';
   require_once('gabarit.php');
 }
 
-function afficherPageAgent($agent){
+function afficherAgent($agent){
 	$contenuAffichage='<form action="garage.php" method="post">
 						          <p> AGENT : </p>
 						                <fieldset>
@@ -32,7 +32,7 @@ function afficherPageAgent($agent){
 	require_once('gabarit.php');
 }
 
-function afficherPageMecanicien($mecanicien){
+function afficherMecanicien($mecanicien){
 	$contenuAffichage='CONNECTE MECANICIEN';
 	require_once('gabarit.php');
 }
