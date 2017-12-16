@@ -26,7 +26,6 @@ function ctlConnexion(){
   }
 }
 
-
 function ctlAccueil(){
   afficherAccueil();
 }
@@ -40,6 +39,16 @@ function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
   }
 }
 
+function ctlModifierClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
+	if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax)){
+		modifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax);
+	}
+	else{
+		throw new Exception("Un des champs est vide");
+	}
+
+}
+
 function ctlAjouterEmploye($nomEmp,$login,$mdp,$categorie){
   if(!empty($nomEmp) && !empty($login) && !empty($mdp) && !empty($categorie)){
     ajouterEmploye($nomEmp,$login,$mdp,$categorie);
@@ -47,6 +56,15 @@ function ctlAjouterEmploye($nomEmp,$login,$mdp,$categorie){
   else {
     throw new Exception("Un ou plusieurs champs sont incorrects");
   }
+}
+
+function ctlModifierEmploye($nomEmploye,$login,$password,$categorie){
+	if(!empty($nomEmploye) && !empty($login) && !empty($password) && !empty($categorie)){
+		modifierEmploye($nomEmploye,$login,$password,$categorie);
+	}
+	else{
+		throw new Exception("Un des champs est vide");
+	}
 }
 
 function ctlSupprimerEmploye($login,$mdp){
@@ -60,4 +78,8 @@ function ctlSupprimerEmploye($login,$mdp){
 
 function ctlErreur($erreur){
   afficherErreur($erreur);
+}
+
+function ctlAfficherPageAgent(){
+	afficherPageAgent();
 }
