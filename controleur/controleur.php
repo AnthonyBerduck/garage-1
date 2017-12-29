@@ -19,9 +19,8 @@ function ctlConnexion(){
         }
       }
     }
-    throw new Exception("Login et/ou password invalides");
   }else{
-    throw new Exception("Champs invalides");
+    throw new Exception("Login et/ou password invalides");
   }
 }
 
