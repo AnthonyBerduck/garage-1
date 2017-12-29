@@ -139,3 +139,13 @@
     $resultat->closeCursor();
     return $directeur;
   }
+
+  function chercherToutesLesInterventions(){
+    $connexion=getConnect();
+    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $client=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }

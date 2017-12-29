@@ -15,7 +15,19 @@ function afficherErreur($erreur){
   require_once('gabarit.php');
 }
 
-function afficherDirecteur(){
-  $contenuAffichage='CONNECTE TRUMP';
+function afficherPageDirecteur($directeur){
+  afficherInterventions();
   require_once('gabarit.php');
 }
+
+function afficherInterventions($interventions){
+    $contenuAffichage='<form method="post" action="garage.php"><p>
+    <label for="interventions">Liste Des Interventions<label><br/>
+     <select name="interventions" id="interventions">';
+    foreach($interventions as $ligne){
+    $contenuAffichage.="<option value="$ligne->num">'$ligne->nomEmp'</option>";
+    }
+    contenuAffichage.="</select><p></form>";
+    require_once('gabarit.php');
+}
+
