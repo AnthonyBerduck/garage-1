@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-      <title>Garage</title>
-      <meta charset="utf-8">
-	  <link rel="stylesheet"  href="vue/style/style.css" />
+        <title>Garage</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet"  href="vue/style/style.css" />
     </head>
 
-  <body>
-    <h1> Page de connexion </h1>
-    <?php echo $contenuAffichage ?>
-  </body>
+    <body>
+        <nav class="menu">
+            <ul>
+                <li><a href="garage.php">
+                    <img src="vue/style/img/icon-van.svg" width="30" height="30" >
+                    Garage en Y</a></li>
+            </ul>
+        </nav>
+
+        <?php echo $contenuAffichage ?>
+
+    </body>
 
 </html>

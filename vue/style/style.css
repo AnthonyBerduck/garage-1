@@ -5,3 +5,7 @@ body{
 .bouton{
   display: inline-block;
 }
+
+ul {
+    list-style-type: none;
+}
