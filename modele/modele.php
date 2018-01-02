@@ -62,11 +62,35 @@
 
   function supprimerEmploye($nomEmploye){
     $connexion=getConnect();
-    $requete="DELETE FROM employe WHERE nomEmploye=$nomEmploye";
+    $requete="DELETE FROM employe WHERE nomEmploye='$nomEmploye'";
+    $resultat=$connexion->query($requete);
+    $resultat->closeCursor();
+  }
+#INTERVENTIONS
+  function ajouterTypeIntervention($nomType,$listeElem,$montant){
+    $connexion=getConnect();
+      //addslashes permet d'accepter les apostrophes//
+     $listeElem=addslashes($listeElem);
+    $requete="INSERT INTO typeIntervention (nomType,listeElem,montant) VALUES('$nomType','$listeElem','$montant')";
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
 
+  function modifierTypeIntervention($nomType,$listeElem,$montant){
+    $connexion=getConnect();
+         //addslashes permet d'accepter les apostrophes//
+     $listeElem=addslashes($listeElem);
+    $requete="UPDATE typeIntervention SET nomType='$nomType', listeElem='$listeElem', montant='$montant' WHERE nomType='$nomType'";
+    $resultat=$connexion->query($requete);
+    $resultat->closeCursor();
+  }
+
+  function supprimerTypeIntervention($nomType){
+    $connexion=getConnect();
+    $requete="DELETE FROM typeIntervention WHERE nomType='$nomType'";
+    $resultat=$connexion->query($requete);
+    $resultat->closeCursor();
+  }
 
   #FONCTIONS RECHERCHE
 
@@ -155,6 +179,16 @@
   function chercherToutesLesInterventions(){
     $connexion=getConnect();
     $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+ function chercherToutesLesTypesInterventions(){
+    $connexion=getConnect();
+    $requete="SELECT nomType,listeElem,montant FROM typeIntervention";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $interventions=$resultat->fetchAll();

@@ -16,7 +16,7 @@ function ctlConnexion(){
                         afficherMecanicien($ligne);
                         break;
                     case 'directeur':
-                        ctlAfficherPageDirecteur($ligne);
+                        afficherDirecteur($ligne);
                         break;
                 }
             }
@@ -28,6 +28,11 @@ function ctlConnexion(){
 function ctlAfficherConnexion(){
     afficherConnexion();
 }
+
+function ctlAfficherPageAgent(){
+    afficherAgent();
+}
+
 
 function ctlAccueil(){
     afficherAccueil();
@@ -52,45 +57,166 @@ function ctlModifierClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
 
 }
 
+
+
+
+#FONCTIONS DIRECTEUR
+
 function ctlAjouterEmploye($nomEmp,$login,$mdp,$categorie){
     if(!empty($nomEmp) && !empty($login) && !empty($mdp) && !empty($categorie)){
+        $employe=chercherTousLesEmployes();
+        foreach($employe as $value){
+            if($nomEmp==$value->nomEmploye){
+                throw new ExceptionControleEmploye("Un employé du meme nom existe déjà, veuillez réessayer");
+            }
+        }
         ajouterEmploye($nomEmp,$login,$mdp,$categorie);
+        ajouterEmployeOK();
     }
     else {
-        throw new Exception("Un ou plusieurs champs sont incorrects");
+        throw new ExceptionControleEmploye("Un ou plusieurs champs sont incorrects");
     }
 }
 
 function ctlModifierEmploye($nomEmploye,$login,$password,$categorie){
+    $employe=chercherTousLesEmployes();
     if(!empty($nomEmploye) && !empty($login) && !empty($password) && !empty($categorie)){
         modifierEmploye($nomEmploye,$login,$password,$categorie);
+        modifierEmployeOK();
     }
     else{
-        throw new Exception("Un des champs est vide");
+        throw new ExceptionControleEmploye("Un des champs est vide, veuillez réessayer");
     }
 }
 
-function ctlSupprimerEmploye($login,$mdp){
-    if(!empty($login) && !empty($mdp)){
-        supprimerEmploye($login,$mdp);
+function ctlSupprimerEmploye(){
+    $employe=chercherTousLesEmployes();
+    foreach ($employe as $ligne){
+        if(isset($_POST[$ligne->nomEmploye])){
+            supprimerEmploye($ligne->nomEmploye);
+        }
     }
-    else{
-        throw new Exception("Champs invalides");
+    supprimerEmployeOK();
+}
+
+function ctlErreurControleEmploye($erreur){
+    afficherErreurControleEmploye($erreur);
+}
+
+function ctlRechercheEmploye($valeurRecherche){
+    $i=0;
+    $employe=chercherTousLesEmployes();
+    foreach ($employe as $ligne){
+        if($valeurRecherche==$ligne->nomEmploye){
+            $i++;
+            rechercheEmploye($ligne);
+        }
+    }
+    if($i==0){
+        throw new ExceptionControleEmploye("Aucun employé ne correspond dans notre base");
     }
 }
 
-function ctlErreur($erreur){
-    afficherErreur($erreur);
-}
-
-function ctlAfficherPageDirecteur($directeur){
-afficherDirecteur();
-}
 
 function ctlControleEmploye(){
     controleEmploye();
 }
 
-function ctlAfficherPageAgent(){
-    afficherAgent();
+function ctlAfficherTousLesEmployes(){
+    $employe=chercherTousLesEmployes();
+    afficherTousLesEmployes($employe);
+}
+
+#INTERVENTIONS
+
+function ctlControleTypeInterventions(){
+    $contenuAffichage="";
+    controleTypeIntervention();
+}
+
+
+function ctlAjouterTypeIntervention($nomType,$listeElem,$montant){
+    if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
+        $interventions=chercherToutesLesTypesInterventions();
+        foreach($interventions as $value){
+            if($nomType==$value->nomType){
+                throw new ExceptionControleTypeIntervention("Une intervention du meme nom existe déjà, veuillez réessayer");
+            }
+        }
+        ajouterTypeIntervention($nomType,$listeElem,$montant);
+        ajouterTypeInterventionOK();
+    }
+    else {
+        throw new ExceptionControleTypeIntervention("Un ou plusieurs champs sont incorrects");
+    }
+}
+
+function ctlAfficherToutesLesTypesInterventions(){
+    $interventions=chercherToutesLesTypesInterventions();
+    afficherToutesLesTypesInterventions($interventions);
+}
+
+function ctlErreurControleTypeIntervention($erreur){
+    afficherErreurControleTypeIntevention($erreur);
+}
+
+function ctlRechercheTypeIntervention($valeurRecherche){
+    $i=0;
+    $interventions=chercherToutesLesTypesInterventions();
+    foreach ($interventions as $ligne){
+        if($valeurRecherche==$ligne->nomType){
+            $i++;
+            rechercheTypeIntervention($ligne);
+        }
+    }
+    if($i==0){
+        throw new ExceptionControleTypeIntervention("Aucune intervention ne correspond dans notre base");
+    }
+}
+
+
+function ctlModifierTypeIntervention($nomType,$listeElem,$montant){
+    $interventions=chercherToutesLesTypesInterventions();
+    if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
+        modifierTypeIntervention($nomType,$listeElem,$montant);
+        modifierTypeInterventionOK();
+    }
+    else{
+        throw new ExceptionControleTypeIntervention("Un des champs est vide, veuillez réessayer");
+    }
+}
+
+function ctlSupprimerTypeIntervention(){
+    $interventions=chercherToutesLesTypesInterventions();
+    foreach ($interventions as $ligne){
+        if(isset($_POST[$ligne->nomType])){
+            supprimerTypeIntervention($ligne->nomType);
+        }
+    }
+    supprimerTypeInterventionOK();
+}
+
+#FONCTIONS GENERALES
+
+
+function ctlErreur($erreur){
+    afficherErreur($erreur);
+}
+class ExceptionControleEmploye extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
+}
+
+
+class ExceptionControleTypeIntervention extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
 }

@@ -1,6 +1,10 @@
+html,body{
+    height: 100%;
+}
 body{
   text-align: center;
 }
+
 
 .bouton{
   display: inline-block;
@@ -8,4 +12,9 @@ body{
 
 ul {
     list-style-type: none;
+}
+
+.banner{
+  height: 30%;
+    width: 40%;
 }
