@@ -1,12 +1,12 @@
 <?php
 
 function afficherAccueil(){
-    $contenuAffichage= ' 
+    $contenuAffichage= '
   <form action="garage.php" method="post">
-  <p> <label> Login : </label> <input type="text" name="login"/> </p>
-  <p> <label> Password : </label> <input type="password" name="psw" /> </p>
-  <p class="bouton"> <input type="submit" value="Connexion" name="connexion" /></p>
-  <p class="bouton"> <input type="reset" value="Reset" name="reset" /> </p>
+    <p> <label> Login : </label> <input type="text" name="login"/> </p>
+    <p> <label> Password : </label> <input type="password" name="psw" /> </p>
+    <p class="bouton"> <input type="submit" value="Connexion" name="connexion" /></p>
+    <p class="bouton"> <input type="reset" value="Reset" name="reset" /> </p>
   </form>';
     require_once("gabarit.php");
 }
@@ -45,8 +45,26 @@ function afficherAgent($agent){
 }
 
 function afficherMecanicien($mecanicien){
-    $contenuAffichage='CONNECTE MECANICIEN';
-    require_once('gabarit.php');
+    setlocale(LC_TIME, "French");
+    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du
+                          '. strftime("%A %d %B").' : </p>
+                          <form action="garage.php" method="post">
+                            <p class="bouton"> <input type="submit" value="Voir le planning d\'un autre mécanicien" name="visuPlanning"/> </p>
+                            <p class="bouton"> <input type="submit" value="Ajouter Une Formation" /> </p>
+                          </form>
+                        </id>';
+                      require_once('gabaritMecanicien.php');
+}
+
+function afficherPlanning($mecanicien){
+    $heure=4;
+    echo '<table>
+            <tr>';
+    while($heure!=22){
+      echo '<td>'. $heure .'H </td>';
+      $heure +=1;
+    }
+    echo '</tr> </table>';
 }
 
 function afficherErreur($erreur){
@@ -126,7 +144,7 @@ function afficherErreurControleTypeIntevention($erreur){
 function rechercheTypeIntervention($intervention){
     $contenuAffichage='
              <p> <label for="nomType">Nom du type :</label> <input type="text" id="nom" name="nomType" value="'.$intervention->nomType.'"/> </p>
-                <p> <label for="listeElem">Liste des élèments:</label> 
+                <p> <label for="listeElem">Liste des élèments:</label>
 <textarea rows="4" cols="50" name="listeElem" >'.$intervention->listeElem.'</textarea></p>
                 <p> <label for="montant">Montant :</label> <input type="number" name="montant" value="'.$intervention->montant.'"/> </p>
         </select></p><input type="submit" value="Modifier intervention" name="modifierTypeIntervention"/></fieldset>';
