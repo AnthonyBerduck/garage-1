@@ -58,11 +58,20 @@ function afficherMecanicien($mecanicien){
 
 function afficherPlanning($mecanicien){
     $heure=4;
+    $heure2= $heure;
     echo '<table>
             <tr>';
     while($heure!=22){
       echo '<td>'. $heure .'H </td>';
       $heure +=1;
+    }
+    echo '</tr> <tr>';
+    while($heure2!=22){
+      $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2);
+      if((sizeOf($inter))!=0){
+        echo '<td>'. $inter->nomType .'</td>';
+      };
+      $heure2 +=1;
     }
     echo '</tr> </table>';
 }
