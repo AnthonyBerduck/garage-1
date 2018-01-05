@@ -29,10 +29,15 @@ function ctlAfficherConnexion(){
     afficherConnexion();
 }
 
+
 function ctlAfficherPageAgent(){
     afficherAgent();
 }
 
+function ctlFinanceInterventions(){
+    $interventions=chercherToutesLesInterventions();
+afficherFinanceInterventions($interventions);
+}
 
 function ctlAccueil(){
     afficherAccueil();

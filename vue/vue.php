@@ -23,7 +23,7 @@ function afficherDirecteur($directeur){
 
 ';
     $contenuAffichage.="</form>";
-    require_once('gabaritMecanicien.php');
+    require_once('gabarit.php');
 }
 
 
@@ -55,6 +55,16 @@ function afficherMecanicien($mecanicien){
                         </id>';
                       require_once('gabaritMecanicien.php');
 }
+
+function afficherFinanceInterventions($interventions){
+    $contenueAffichage="";
+    foreach($interventions){
+       $contenuAffichage.='<p><label><input type="checkbox" name="'.$value->num.'"/></label><input type="text" value="Nom:'.$value->nomType.' Etat:'.$value->etat.'" readonly="readonly"/></p></br>';  
+    }
+    require_once(gabaritMecanicien.php);
+}
+
+
 
 function afficherPlanning($mecanicien){
     $heure=4;

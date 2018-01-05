@@ -178,7 +178,7 @@
 
   function chercherToutesLesInterventions(){
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention";
+    $requete="SELECT num,nomType,nomEmp,idClient,date,heure,etat FROM intervention";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $interventions=$resultat->fetchAll();
