@@ -3,10 +3,10 @@
 function afficherAccueil(){
     $contenuAffichage= '
   <form action="garage.php" method="post">
-    <p> <label> Login : </label> <input type="text" name="login"/> </p>
-    <p> <label> Password : </label> <input type="password" name="psw" /> </p>
-    <p class="bouton"> <input type="submit" value="Connexion" name="connexion" /></p>
-    <p class="bouton"> <input type="reset" value="Reset" name="reset" /> </p>
+  <p> <label> Login : </label> <input type="text" name="login"/> </p>
+  <p> <label> Password : </label> <input type="password" name="psw" /> </p>
+  <p class="bouton"> <input type="submit" value="Connexion" name="connexion" /></p>
+  <p class="bouton"> <input type="reset" value="Reset" name="reset" /> </p>
   </form>';
     require_once("gabarit.php");
 }
@@ -17,35 +17,69 @@ function afficherDirecteur($directeur){
 
   <button name="employe" type="submit" ><img src="vue/style/img/employee.svg" width="100" height="100"/><br/>Employés</button>
 
-<button name="typeInterventions" type="submit" ><img src="vue/style/img/settings.svg" width="100" height="100"/><br/> Interventions</button>
+  <button name="typeInterventions" type="submit" ><img src="vue/style/img/settings.svg" width="100" height="100"/><br/> Interventions</button>
 
-<button name="necessaires" type="submit" ><img src="vue/style/img/edit.svg" width="100" height="100"/><br/>Nécessaires aux interventions</button></p>
+  <button name="necessaires" type="submit" ><img src="vue/style/img/edit.svg" width="100" height="100"/><br/>Nécessaires aux interventions</button></p>
 
 ';
     $contenuAffichage.="</form>";
     require_once('gabarit.php');
 }
 
-
+//FONCTIONS AGENTS
 function afficherAgent($agent){
-    $contenuAffichage='<form action="garage.php" method="post">
-						          <p> AGENT : </p>
-						                <fieldset>
-							                <legend>Ajouter Client</legend>
-                               <p> <label for="nom">Nom :</label> <input type="text" id="nom" name="nom"/> </p>
-                               <p> <label for="prenom">Prenom :</label> <input type="text" id="prenom" name="prenom"/> </p>
-                               <p> <label for="adresse">Adresse :</label> <input type="text" id="adresse" name="adresse"/> </p>
-                               <p> <label for="numTel">Numéro de téléphone :</label> <input type="number" id="numTel" name="numTel"/> </p>
-                               <p> <label for="mail">Mail :</label> <input type="text" id="mail" name="mail"/> </p>
-                               <p> <label for="montantMax">Montant Max :</label> <input type="number" id="montantMax" name="montantMax"/> </p>
-                            </fieldset>
-                     </form>';
+    $contenuAffichage='Bienvenue '.$agent->nomEmploye.'
+  <p><form action="garage.php" method="post">
 
+  <button name="client" type="submit" ><img src="vue/style/img/employee.svg" width="100" height="100"/><br/>Clients</button>
+
+  <button name="paiements" type="submit" ><img src="vue/style/img/settings.svg" width="100" height="100"/><br/>Paiements</button>
+
+  <button name="priseRDV" type="submit" ><img src="vue/style/img/edit.svg" width="100" height="100"/><br/>Prise de RDV</button></p>';
+    $contenuAffichage.="</form>";
     require_once('gabarit.php');
 }
 
+  function controleClient(){
+    $contenuAffichage="";
+    require_once('gabaritControleClient.php');
+}
+
+function afficherTousLesClients($clients){
+  $contenuAffichage='<fieldset>
+                      <legend>Liste des clients</legend>';
+  foreach($clients as $ligne){
+    $contenuAffichage.='<p><input type="checkbox" name="'.$ligne->id.'"/><input type="text" size="100" value="'.$ligne->nom.' '.$ligne->prenom.' habite au '.$ligne->adresse.' joignable au '.$ligne->numTel.' ou à l adresse mail '.$ligne->mail.' possède un découvert de'.$ligne->montantMax.' €" readonly="readonly  "/></p>';
+  }
+  $contenuAffichage.='<input type="submit" name="modifierClient" value="Modifier un client"/>
+                      </fieldset>';
+  require_once('gabaritControleClient.php');
+}
+
+function afficherModifierClient($client){
+  foreach ($client as $unclient) {
+  $contenuAffichage='<fieldset>
+                      <legend>Modification du client </legend>
+                      <p><label for="idClient">Id du client:</label> <input type="text" id="nomClient" name="idClient" value="'.$unclient->id.'" readonly="readonly"/></p>
+                      <p><label for="nomClient">Nom du client:</label> <input type="text" id="nomClient" name="nomClient" value="'.$unclient->nom.'"/></p>
+                      <p><label for="prenomClient">Prenom du client:</label> <input type="text" id="prenomClient" name="prenomClient" value="'.$unclient->prenom.'"/></p>
+                      <p><label for="adresseClient">Adresse du client:</label> <input type="text" id="adresseClient" name="adresseClient" value="'.$unclient->adresse.'"/></p>
+                      <p><label for="numTelClient">NumTel du client:</label> <input type="text" id="numTelClient" name="numTelClient" value="'.$unclient->numTel.'"/></p>
+                      <p><label for="mailClient">Mail du client:</label> <input type="text" id="mailClient" name="mailClient" value="'.$unclient->mail.'"/></p>
+                      <p><label for="montantClient">Montant max du client:</label> <input type="text" id="montantClient" name="montantClient" value="'.$unclient->montantMax.'"/></p>
+                      <p><input type="submit" name="modifierLeClient" value="Modifier le client"/></p>
+
+                      </fieldset>';
+                    }
+  require_once('gabaritControleClient.php');
+
+}
+
+//FONCTIONS A TRIER
+
+
 function afficherMecanicien($mecanicien){
-  setlocale(LC_TIME, "French");
+    setlocale(LC_TIME, "French");
     $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du
                           '. strftime("%A %d %B").' : </p>
                         </id>';

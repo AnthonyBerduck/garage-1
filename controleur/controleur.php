@@ -29,12 +29,19 @@ function ctlAfficherConnexion(){
     afficherConnexion();
 }
 
-function ctlAfficherPageAgent(){
-    afficherAgent();
-}
-
 function ctlAccueil(){
     afficherAccueil();
+}
+
+//FONCTIONS AGENT
+
+function ctlControleClient(){
+    controleClient();
+}
+
+
+function ctlAfficherPageAgent(){
+    afficherAgent();
 }
 
 ctlAfficherMecanicien($ligne){
@@ -53,14 +60,27 @@ function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
     }
 }
 
-function ctlModifierClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
-    if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax)){
+function ctlAfficherTousLesClients(){
+   $clients=chercherTousLesClients();
+   afficherTousLesClients($clients);
+}
+
+function ctlAfficherModifierClient(){
+  foreach($_POST as $key => $value){
+    if(is_int($key) && !empty($_POST[$key])){
+      $client=chercherUnClient($key);
+      afficherModifierClient($client);
+    }
+  }
+}
+
+function ctlModifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax){
+    if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
         modifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax);
     }
     else{
         throw new Exception("Un des champs est vide");
     }
-
 }
 
 

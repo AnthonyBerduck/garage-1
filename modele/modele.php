@@ -12,24 +12,14 @@
 
   function ajouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
     $connexion=getConnect();
-    $requete="INSERT INTO client (nom,prenom,adresse,numTel,mail,montantMax) VALUES($nom,$prenom,$adresse,$numTel,$mail,$montantMax)";
+    $requete="INSERT INTO client (nom,prenom,adresse,numTel,mail,montantMax) VALUES('$nom','$prenom','$adresse',$numTel,'$mail',$montantMax)";
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
 
-  function chercherUnClient($id){
+  function modifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax){
     $connexion=getConnect();
-    $requete="SELECT id,nom,prenom,adresse,numTel,mail,montantMax FROM client WHERE id=$id";
-    $resultat=$connexion->query($requete);
-    $resultat->setFetchMode(PDO::FETCH_OBJ);
-    $client=$resultat->fetchAll();
-    $resultat->closeCursor();
-    return $client;
-  }
-
-  function modifierClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
-    $connexion=getConnect();
-    $requete="UPDATE client SET nom='$nom', prenom='$prenom', adresse='$adresse', numTel='$numTel', mail='$mail', montantMax='$montantMax' WHERE id='$id'";
+    $requete="UPDATE client SET nom='$nom', prenom='$prenom', adresse='$adresse', numTel='$numTel', mail='$mail', montantMax=$montantMax WHERE id=$id";
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
@@ -100,7 +90,7 @@
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $client=$resultat->fetchAll();
-    $resultat->$closeCursor();
+    $resultat->closeCursor();
     return $client;
   }
 
@@ -144,6 +134,16 @@
     $mecanicien=$resultat->fetchAll();
     $resultat->closeCursor();
     return $mecanicien;
+  }
+
+  function chercherUnClient($id){
+    $connexion=getConnect();
+    $requete="SELECT id,nom,prenom,adresse,numTel,mail,montantMax FROM client WHERE id=$id";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $client=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $client;
   }
 
   function chercherUnMecanicien($nomEmploye){
@@ -204,6 +204,7 @@
     $intervention=$resultat->fetch();
     $resultat->closeCursor();
     return $intervention;
+
   }
 
   function chercherUnTypeInterventionMeca($nomType){
