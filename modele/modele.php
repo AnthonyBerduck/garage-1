@@ -196,12 +196,22 @@
     return $interventions;
   }
 
-  function chercherUneInterventionMeca($nomEmp,$heure){
+  function chercherUneInterventionMeca($nomEmp,$heure,$date){
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' "; // Manque la verif date
+    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' and date='$date'";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
-    $intervention=$resultat->fetchAll();
+    $intervention=$resultat->fetch();
     $resultat->closeCursor();
     return $intervention;
+  }
+
+  function chercherUnTypeInterventionMeca($nomType){
+    $connexion=getConnect();
+    $requete="SELECT nomType,listeElem,montant FROM typeIntervention where nomType='$nomType' ";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $typeIntervention=$resultat->fetch();
+    $resultat->closeCursor();
+    return $typeIntervention;
   }

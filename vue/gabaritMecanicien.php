@@ -20,6 +20,13 @@
           afficherPlanning($mecanicien);
         ?>
 
+        <form action="garage.php" method="post">
+          <p class="text"> <input type="text" placeholder="aaaa/mm/jj" /> </p>
+          <p class="bouton1"> <input type="submit" value="Voir le planning d'une autre date" name="date"/> </p>
+          <p class="bouton"> <input type="submit" value="Voir le planning d'un autre mécanicien" name="visuPlanning"/> </p>
+          <p class="bouton"> <input type="submit" value="Ajouter Une Formation" name="formation"/> </p>
+        </form>
+
     </body>
 
 </html>

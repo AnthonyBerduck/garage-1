@@ -45,35 +45,34 @@ function afficherAgent($agent){
 }
 
 function afficherMecanicien($mecanicien){
-    setlocale(LC_TIME, "French");
+  setlocale(LC_TIME, "French");
     $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du
                           '. strftime("%A %d %B").' : </p>
-                          <form action="garage.php" method="post">
-                            <p class="bouton"> <input type="submit" value="Voir le planning d\'un autre mécanicien" name="visuPlanning"/> </p>
-                            <p class="bouton"> <input type="submit" value="Ajouter Une Formation" /> </p>
-                          </form>
                         </id>';
                       require_once('gabaritMecanicien.php');
 }
 
 function afficherPlanning($mecanicien){
+    setlocale(LC_TIME, "French");
     $heure=4;
     $heure2= $heure;
-    echo '<table>
-            <tr>';
+    echo '<div> <table> <tr>';
     while($heure!=22){
       echo '<td>'. $heure .'H </td>';
       $heure +=1;
     }
     echo '</tr> <tr>';
     while($heure2!=22){
-      $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2);
-      if((sizeOf($inter))!=0){
-        echo '<td>'. $inter->nomType .'</td>';
-      };
+      $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2,strftime("%Y-%m-%d"));
+      if($inter){
+        $typeInter=chercherUnTypeInterventionMeca($inter->nomType);
+        echo '<td>'. $inter->nomType .' : </br>'. $typeInter->listeElem .'</td>';
+      }else{
+        echo '<td></td>';
+      }
       $heure2 +=1;
     }
-    echo '</tr> </table>';
+    echo '</div> </tr> </table>';
 }
 
 function afficherErreur($erreur){

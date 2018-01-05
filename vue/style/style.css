@@ -1,13 +1,16 @@
-html,body{
+html{
   height: 100%;
+  margin : auto;
 }
 
 body{
   text-align: center;
+  height: 100%;
+  margin : auto;
 }
 
 
-.bouton{
+.text,.bouton1,table{
   display: inline-block;
 }
 

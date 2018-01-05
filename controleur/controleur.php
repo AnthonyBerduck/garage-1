@@ -13,7 +13,7 @@ function ctlConnexion(){
                         afficherAgent($ligne);
                         break;
                     case 'mecanicien':
-                        afficherMecanicien($ligne);
+                        ctlAfficherMecanicien($ligne);
                         break;
                     case 'directeur':
                         afficherDirecteur($ligne);
@@ -33,9 +33,15 @@ function ctlAfficherPageAgent(){
     afficherAgent();
 }
 
-
 function ctlAccueil(){
     afficherAccueil();
+}
+
+ctlAfficherMecanicien($ligne){
+  if(isset($_POST['date'])){
+      afficherMecanicien();
+  }
+  afficherMecanicien();
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
