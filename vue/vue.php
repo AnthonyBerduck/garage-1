@@ -23,7 +23,7 @@ function afficherDirecteur($directeur){
 
 ';
     $contenuAffichage.="</form>";
-    require_once('gabarit.php');
+    require_once('gabaritMecanicien.php');
 }
 
 
