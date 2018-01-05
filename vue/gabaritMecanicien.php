@@ -14,10 +14,6 @@
                     Garage en Y</a></li>
             </ul>
         </nav>
- <fieldset>
-     <h1></h1>
-     <legend>Recherche Client</legend>
-                <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Recherche une intervention pour la modifier" name="boutonRechercheTypeIntervention"/><input type="submit" value="Afficher toutes les interventions pour en supprimer" name="afficherToutesLesTypesInterventions" /></p></fieldset>
         <?php
           echo $contenuAffichage;
           afficherPlanning($mecanicien);
