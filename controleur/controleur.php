@@ -40,6 +40,10 @@ function ctlControleClient(){
 }
 
 
+function ctlAfficherPageAgent(){
+    afficherAgent();
+}
+
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
     if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
         ajouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax);

@@ -195,3 +195,14 @@
     $resultat->closeCursor();
     return $interventions;
   }
+
+  function chercherUneInterventionMeca($nomEmp,$heure){
+    $connexion=getConnect();
+    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' "; // Manque la verif date
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $intervention=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $intervention;
+
+  }
