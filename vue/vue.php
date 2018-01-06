@@ -78,45 +78,52 @@ function afficherModifierClient($client){
 //FONCTIONS A TRIER
 
 
-function afficherMecanicien($mecanicien){
+function afficherMecanicien($mecanicien,$interventions,$arrayTypeInter){
     setlocale(LC_TIME, "French");
-    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du
-                          '. strftime("%A %d %B").' : </p>
-                        </id>';
-                      require_once('gabaritMecanicien.php');
-}
-
-function afficherPlanning($mecanicien){
-    setlocale(LC_TIME, "French");
+    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du'. strftime("%A %d %B").' : </p> </id>';
     $heure=4;
-    $heure2= $heure;
-    echo '<div> <table> <tr>';
+    $contenuAffichage = '<div> <table> <tr>';
     while($heure!=22){
-      echo '<td>'. $heure .'H </td>';
+      $contenuAffichage .= '<td>'. $heure .'H </td>';
       $heure +=1;
     }
-    echo '</tr> <tr>';
-    while($heure2!=22){
-      $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2,strftime("%Y-%m-%d"));
-      if($inter){
-        $typeInter=chercherUnTypeInterventionMeca($inter->nomType);
-        echo '<td>'. $inter->nomType .' : </br>'. $typeInter->listeElem .'</td>';
-      }else{
-        echo '<td></td>';
+    $heure=4;
+    $cpt=0;
+    while($heure!=22){
+      $x=true;
+      foreach($interventions as $value){
+        var_dump($value->heure);
+        var_dump($heure);
+        if(($value->heure == heure){
+          $contenuAffichage .= '<td>'. $value->$nomType .' : '. $arrayTypeInter[$cpt] .'</td>';
+          $cpt+=1;
+          $x=false;
+        }
       }
-      $heure2 +=1;
+      if($x){ // Si il n'y a pas d'intervention à cette heure.
+        $contenuAffichage .= '<td> X </td>';
+        $heure +=1;
+      }
     }
-    echo '</div> </tr> </table>';
+    $contenuAffichage .= '</tr> </table> </div>';
+    require_once("gabaritMecanicien.php");
+    // Pas de require_once (on doit charger $contenuAffichage2)
+}
+
+function afficherPlanning($nomEmp,$date){
+
 }
 
 function afficherErreur($erreur){
     $contenuAffichage=$erreur.'</br><a href="garage.php">Revenir à l\'accueil</a>';
     require_once('gabarit.php');
 }
+
 function afficherErreurControleEmploye($erreur){
     $contenuAffichage=$erreur;
     require_once('gabaritControleEmploye.php');
 }
+
 function controleEmploye(){
     $contenuAffichage="";
     require_once('gabaritControleEmploye.php');
@@ -157,8 +164,8 @@ function rechercheEmploye($employe){
     $contenuAffichage.='</select></p><input type="submit" value="Modifier employe" name="modifierEmploye"/></fieldset>';
     require_once('gabaritControleEmploye.php');
 
-
 }
+
  function ajouterEmployeOK(){
       $contenuAffichage='Votre employé à été ajouté à la base ! Félicitations !';
        require_once('gabaritControleEmploye.php');

@@ -15,9 +15,9 @@
             </ul>
         </nav>
 
+
         <?php
           echo $contenuAffichage;
-          afficherPlanning($mecanicien);
         ?>
 
         <form action="garage.php" method="post">
@@ -26,6 +26,10 @@
           <p class="bouton"> <input type="submit" value="Voir le planning d'un autre mécanicien" name="visuPlanning"/> </p>
           <p class="bouton"> <input type="submit" value="Ajouter Une Formation" name="formation"/> </p>
         </form>
+
+        <?php
+          echo $contenuAffichage2;
+         ?>
 
     </body>
 

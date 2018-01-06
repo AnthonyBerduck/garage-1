@@ -44,11 +44,23 @@ function ctlAfficherPageAgent(){
     afficherAgent();
 }
 
-ctlAfficherMecanicien($ligne){
-  if(isset($_POST['date'])){
-      afficherMecanicien();
+function ctlAfficherMecanicien($ligne){
+  $arrayTypeInter=array("");
+  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
+  $cpt=0;
+  var_dump($interventions);
+  foreach($interventions as $value){
+    $typeInter=chercherUnTypeInterventionMeca($value->nomType);
+    array_push($arrayTypeInter,$arrayTypeInter);
+    $cpt+=1;
   }
-  afficherMecanicien();
+  afficherMecanicien($ligne,$interventions,$arrayTypeInter);
+  //afficherPlanning($mecanicien->nomEmploye,strftime("%Y-%m-%d"));
+}
+
+function ctlChercherUneInterventionMeca($mecanicien,$heure2){
+  $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2,strftime("%Y-%m-%d"));
+  return $inter;
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){

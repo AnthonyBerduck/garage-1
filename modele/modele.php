@@ -196,12 +196,12 @@
     return $interventions;
   }
 
-  function chercherUneInterventionMeca($nomEmp,$heure,$date){
+  function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes les interventions d'une journée d'un mécanicien
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' and date='$date'";
+    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and date='$date'";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
-    $intervention=$resultat->fetch();
+    $intervention=$resultat->fetchAll();
     $resultat->closeCursor();
     return $intervention;
 

@@ -48,6 +48,10 @@ try{
         ctlAfficherToutesLesTypesInterventions();
     }else if (isset($_POST['supprimerTypeIntervention'])){
         ctlSupprimerTypeIntervention();
+
+    //BOUTONS Mecanicien
+    }else if(isset($POST_['date'])){
+      //ctlPlanningDate();
     }else{
         ctlAccueil();
     }
