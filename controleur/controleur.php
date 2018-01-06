@@ -40,16 +40,14 @@ function ctlControleClient(){
 }
 
 
-function ctlAfficherPageAgent(){
-    afficherAgent();
-}
 
-function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
-    if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
-        ajouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax);
+function ctlAjouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
+    if(!empty($nom) && !empty($prenom) && !empty($dateNaissance) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
+        ajouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax);
+        ajouterClientOK();
     }
     else {
-        throw new Exception("Un ou plusieurs champs sont invalides");
+        throw new ExceptionControleClient("Un ou plusieurs champs sont invalides");
     }
 }
 
@@ -67,17 +65,124 @@ function ctlAfficherModifierClient(){
   }
 }
 
-function ctlModifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax){
-    if(!empty($nom) && !empty($prenom) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
-        modifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax);
+function ctlModifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
+    if(!empty($nom) && !empty($prenom) && !empty($dateNaissance) && !empty($adresse) && !empty($numTel) && !empty($mail) && !empty($montantMax) && (strlen((string)$numTel))==10){
+        modifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax);
+        modifierClientOK();
     }
     else{
-        throw new Exception("Un des champs est vide");
+        throw new ExceptionControleClient("Un des champs est vide");
     }
 }
 
+function ctlAfficherSyntheseClient(){
+  $clients=chercherTousLesClients();
+  afficherSyntheseClient($clients);
+}
+
+function ctlSyntheseClient($id){
+  if(is_numeric($id) && !empty($id)){
+    $client=chercherUnClient($id);
+    if($client==null){
+      throw new ExceptionControleClient("Le client n'existe pas");
+    }
+    else{
+      $interventions=chercherInterventionsClient($id);
+      if ($interventions==null) {
+        syntheseClientSansIntervention($client);
+      }
+      else{
+        $interventionsDifferees=chercherInterventionsDiffereesClient($id);
+        syntheseClientAvecIntervention($client, $interventions, $interventionsDifferees);
+      }
+    }
+  }
+  else {
+    throw new ExceptionControleClient("Le champ est invalide, veuillez réessayer.");
+  }
+}
 
 
+function ctlAfficherRechercherClient(){
+    $clients=chercherTousLesClients();
+    afficherRechercherClient($clients);
+}
+
+function ctlRechercherClient($nom,$dateNaissance){
+  if(!empty($nom) && !empty($dateNaissance)){
+    $client=chercherUnClientNomDate($nom,$dateNaissance);
+    afficherModifierClient($client);
+  }
+  else {
+      throw new ExceptionControleClient("Un ou plusieurs champs sont invalides");
+  }
+}
+
+function ctlControleRDV(){
+    controleRDV();
+}
+
+function ctlAfficherRechercherMecanicien(){
+  afficherRechercherMecanicien();
+}
+
+function ctlAfficherClientAgent(){
+  $clients=chercherTousLesClients();
+  afficherClientAgent($clients);
+}
+
+function ctlAfficherMecanicienAgent(){
+  $mecaniciens=chercherTousLesMecaniciens();
+  afficherMecanicienAgent($mecaniciens);
+}
+
+function ctlAfficherPlanningRDV($nom,$date){
+  $interventions=rechercheTypeIntervention($nom,$date);
+  afficherPlanningRDV($interventions);
+}
+
+function ctlAfficherPrendreRDV(){
+  foreach($_POST as $key => $value){
+    if(is_int($key) && !empty($_POST[$key])){
+      $client=chercherUnClient($key);
+      $interventions=chercherToutesLesTypesInterventions();
+      $mecaniciens=chercherTousLesMecaniciens();
+      afficherPrendreRDV($client,$interventions,$mecaniciens);
+    }
+  }
+}
+
+function ctlAjouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure){
+  if(!empty($nomType) && !empty($nomEmp) && !empty($idClient) && !empty($dateIntervention) &&!empty($heure)){
+    $interventions=chercherToutesLesInterventions();
+    $formations=chercherToutesLesFormations();
+    $cpt=0;
+    foreach($interventions as $ligne){
+      if($ligne->nomEmp==$nomEmp && $ligne->dateIntervention==$dateIntervention && $ligne->heure==$heure){
+        throw new ExceptionControleRDV("Le mécanicien est déjà en intervention à cet horaire ci, veuillez réessayer.");
+      }
+    }
+    foreach($formations as $ligne){
+      if($ligne->nomEmploye==$nomEmp && $ligne->date==$dateIntervention && $ligne->heure==$heure){
+        throw new ExceptionControleRDV("Le mécanicien a une formation à cet horaire ci, veuillez réessayer.");
+      }
+    }
+    ajouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure);
+    $interventionAjoutee=chercherUneIntervention($nomType);
+    ajouterInterventionOK($interventionAjoutee);
+  }
+  else
+    throw new ExceptionControleRDV("Un des champs est invalides");
+
+}
+
+function ctlErreurControleClient($erreur){
+  afficherErreurControleClient($erreur);
+}
+
+function ctlErreurControleRDV($erreur){
+  afficherErreurControleRDV($erreur);
+}
 
 #FONCTIONS DIRECTEUR
 
@@ -221,6 +326,16 @@ function ctlSupprimerTypeIntervention(){
 function ctlErreur($erreur){
     afficherErreur($erreur);
 }
+
+class ExceptionControleClient extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
+}
+
 class ExceptionControleEmploye extends Exception{
     public function __construct($message, $code = 0){
         parent::__construct($message, $code);
@@ -230,6 +345,14 @@ class ExceptionControleEmploye extends Exception{
     }
 }
 
+class ExceptionControleRDV extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
+}
 
 class ExceptionControleTypeIntervention extends Exception{
     public function __construct($message, $code = 0){

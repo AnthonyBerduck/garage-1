@@ -10,7 +10,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="garage.php">
-                    <img src="vue/style/img/icon-van.svg" width="30" height="30" >
+                    <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
                     Garage en Y</a></li>
             </ul>
         </nav>

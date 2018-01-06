@@ -10,7 +10,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="garage.php">
-                    <img src="vue/style/img/icon-van.svg" width="30" height="30" >
+                    <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
                     Garage en Y</a></li>
             </ul>
         </nav>
@@ -21,6 +21,7 @@
               <legend>Ajouter Client</legend>
                <p> <label for="nom">Nom :</label> <input type="text" id="nom" name="nom"/> </p>
                <p> <label for="prenom">Prenom :</label> <input type="text" id="prenom" name="prenom"/> </p>
+                <p> <label for="dateNaissance">Date de naissance :</label> <input type="date" id="dateNaissance" name="dateNaissance"/> </p>
                <p> <label for="adresse">Adresse :</label> <input type="text" id="adresse" name="adresse"/> </p>
                <p> <label for="numTel">Numéro de téléphone :</label> <input type="number" id="numTel" name="numTel"/> </p>
                <p> <label for="mail">Mail :</label> <input type="text" id="mail" name="mail"/> </p>
@@ -32,9 +33,14 @@
             <fieldset>
             <legend>Que voulez vous faire ?</legend>
             <p> <input type="submit" name="afficherClient" value="Afficher les clients" />
-              <input type="submit" name="afficherSyntheseClient" value="Obtenir la synthèse client" />
+              <input type="submit" name="afficherSyntheseClient" value="Obtenir la synthèse d'un client" />
+              <input type="submit" name="afficherRechercherClient" value="Rechercher un client" />
+              <input type="submit" name="afficherRechercherMecanicien" value="Rechercher planning d'un mécanicien"/>
+              <input type="submit" name="afficherMecanicienAgent" value="Liste des mécaniciens"/>
+              <input type="submit" name="afficherClientAgent" value="Prendre rendez vous avec un client"/>
             </p>
             </fieldset>
+
             <?php echo $contenuAffichage ?>
       </form>
     </body>

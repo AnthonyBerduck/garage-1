@@ -10,16 +10,23 @@
 
   #FONCTIONS AGENT
 
-  function ajouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
+  function ajouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
     $connexion=getConnect();
-    $requete="INSERT INTO client (nom,prenom,adresse,numTel,mail,montantMax) VALUES('$nom','$prenom','$adresse',$numTel,'$mail',$montantMax)";
+    $requete="INSERT INTO client (nom,prenom,dateNaissance,adresse,numTel,mail,montantMax) VALUES('$nom','$prenom','$dateNaissance','$adresse','$numTel','$mail',$montantMax)";
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
 
-  function modifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax){
+  function modifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
     $connexion=getConnect();
-    $requete="UPDATE client SET nom='$nom', prenom='$prenom', adresse='$adresse', numTel='$numTel', mail='$mail', montantMax=$montantMax WHERE id=$id";
+    $requete="UPDATE client SET nom='$nom', prenom='$prenom', dateNaissance='$dateNaissance', adresse='$adresse', numTel='$numTel', mail='$mail', montantMax=$montantMax WHERE id=$id";
+    $resultat=$connexion->query($requete);
+    $resultat->closeCursor();
+  }
+
+  function ajouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure){
+    $connexion=getConnect();
+    $requete="INSERT INTO intervention (nomType,nomEmp,idClient,dateIntervention,heure) VALUES ('$nomType','$nomEmp',$idClient,'$dateIntervention',$heure)";
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
@@ -56,7 +63,12 @@
     $resultat=$connexion->query($requete);
     $resultat->closeCursor();
   }
+
+
 #INTERVENTIONS
+
+
+#TYPEINTERVENTIONS
   function ajouterTypeIntervention($nomType,$listeElem,$montant){
     $connexion=getConnect();
       //addslashes permet d'accepter les apostrophes//
@@ -86,7 +98,7 @@
 
   function chercherTousLesClients(){
     $connexion=getConnect();
-    $requete="SELECT id,nom,prenom,adresse,numTel,mail,montantMax FROM client";
+    $requete="SELECT id,nom,prenom,dateNaissance,adresse,numTel,mail,montantMax FROM client";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $client=$resultat->fetchAll();
@@ -138,10 +150,20 @@
 
   function chercherUnClient($id){
     $connexion=getConnect();
-    $requete="SELECT id,nom,prenom,adresse,numTel,mail,montantMax FROM client WHERE id=$id";
+    $requete="SELECT id,nom,prenom,dateNaissance,adresse,numTel,mail,montantMax FROM client WHERE id=$id";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
-    $client=$resultat->fetchAll();
+    $client=$resultat->fetch();
+    $resultat->closeCursor();
+    return $client;
+  }
+
+  function chercherUnClientNomDate($nom,$dateNaissance){
+    $connexion=getConnect();
+    $requete="SELECT id,nom,prenom,dateNaissance,adresse,numTel,mail,montantMax FROM client WHERE nom='$nom' AND dateNaissance='$dateNaissance'";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $client=$resultat->fetch();
     $resultat->closeCursor();
     return $client;
   }
@@ -151,7 +173,7 @@
     $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE nomEmploye='$nomEmploye' AND categorie='mecanicien'" ;
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
-    $mecanicien=$resultat->fetchAll();
+    $mecanicien=$resultat->fetch();
     $resultat->closeCursor();
     return $mecanicien;
   }
@@ -178,12 +200,22 @@
 
   function chercherToutesLesInterventions(){
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention";
+    $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $interventions=$resultat->fetchAll();
     $resultat->closeCursor();
     return $interventions;
+  }
+
+  function chercherUneIntervention($nomType){
+    $connexion=getConnect();
+    $requete="SELECT * FROM ((SELECT * FROM intervention WHERE nomType='$nomType') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $intervention=$resultat->fetch();
+    $resultat->closeCursor();
+    return $intervention;
   }
 
  function chercherToutesLesTypesInterventions(){
@@ -198,11 +230,41 @@
 
   function chercherUneInterventionMeca($nomEmp,$heure){
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' "; // Manque la verif date
+    $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where nomEmp='$nomEmp' and heure='$heure' "; // Manque la verif date
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $intervention=$resultat->fetchAll();
     $resultat->closeCursor();
     return $intervention;
 
+  }
+
+  function chercherInterventionsClient($id){
+    $connexion=getConnect();
+    $requete="SELECT num,T1.nomType as nomType,nomEmp,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id) T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+  function chercherInterventionsDiffereesClient($id){
+    $connexion=getConnect();
+    $requete="SELECT num,T1.nomType as nomType,nomEmp,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+  function chercherToutesLesFormations(){
+    $connexion=getConnect();
+    $requete="SELECT * FROM formation";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $formations=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $formations;
   }

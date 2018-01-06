@@ -10,7 +10,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="garage.php">
-                    <img src="vue/style/img/icon-van.svg" width="30" height="30" >
+                    <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
                     Garage en Y</a></li>
             </ul>
         </nav>
@@ -31,7 +31,7 @@
             <p>
             <fieldset><legend>Recherche</legend>
                 <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Recherche" name="boutonRecherche"/><input type="submit" value="Afficher Tous les Employes" name="afficherTousLesEmployes" /></p></fieldset>
-        
+
         <fieldset><legend>Employés</legend>
              <?php echo $contenuAffichage ?>
             </fieldset>
