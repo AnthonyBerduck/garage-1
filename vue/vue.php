@@ -40,25 +40,26 @@ function afficherAgent($agent){
     require_once('gabarit.php');
 }
 
-  function controleClient(){
+
+function controleClient(){
     $contenuAffichage="";
     require_once('gabaritControleClient.php');
 }
 
 function afficherTousLesClients($clients){
-  $contenuAffichage='<fieldset>
+    $contenuAffichage='<fieldset>
                       <legend>Liste des clients</legend>';
-  foreach($clients as $ligne){
-    $contenuAffichage.='<p><input type="checkbox" name="'.$ligne->id.'"/><input type="text" size="100" value="'.$ligne->nom.' '.$ligne->prenom.' habite au '.$ligne->adresse.' joignable au '.$ligne->numTel.' ou à l adresse mail '.$ligne->mail.' possède un découvert de'.$ligne->montantMax.' €" readonly="readonly  "/></p>';
-  }
-  $contenuAffichage.='<input type="submit" name="modifierClient" value="Modifier un client"/>
+    foreach($clients as $ligne){
+        $contenuAffichage.='<p><input type="checkbox" name="'.$ligne->id.'"/><input type="text" size="100" value="'.$ligne->nom.' '.$ligne->prenom.' habite au '.$ligne->adresse.' joignable au '.$ligne->numTel.' ou à l adresse mail '.$ligne->mail.' possède un découvert de'.$ligne->montantMax.' €" readonly="readonly  "/></p>';
+    }
+    $contenuAffichage.='<input type="submit" name="modifierClient" value="Modifier un client"/>
                       </fieldset>';
-  require_once('gabaritControleClient.php');
+    require_once('gabaritControleClient.php');
 }
 
 function afficherModifierClient($client){
-  foreach ($client as $unclient) {
-  $contenuAffichage='<fieldset>
+    foreach ($client as $unclient) {
+        $contenuAffichage='<fieldset>
                       <legend>Modification du client </legend>
                       <p><label for="idClient">Id du client:</label> <input type="text" id="nomClient" name="idClient" value="'.$unclient->id.'" readonly="readonly"/></p>
                       <p><label for="nomClient">Nom du client:</label> <input type="text" id="nomClient" name="nomClient" value="'.$unclient->nom.'"/></p>
@@ -70,15 +71,45 @@ function afficherModifierClient($client){
                       <p><input type="submit" name="modifierLeClient" value="Modifier le client"/></p>
 
                       </fieldset>';
-                    }
-  require_once('gabaritControleClient.php');
+    }
+    require_once('gabaritControleClient.php');
 
 }
 
 //FONCTIONS A TRIER
 
+function afficherPaiementsInterventions($interventions,$idClient){
+    $contenuAffichage='<input type="text" name="idClient" id="idClientInvisible" value="'.$idClient.'" readonly="readonly"/>';
+    foreach($interventions as $value){
+        $contenuAffichage.='<p><label><input type="checkbox" name="'.$value->num.'" value="'.$value->nomType.'"/></label><input type="text" value="Nom : '.$value->nomType.' Etat : '.$value->etat.'" readonly="readonly"/></p></br>';
+    }
+    $contenuAffichage.=' <p class="bouton"> <input type="submit" value="Payer" name="payer"/> </p>
+                            <p class="bouton"> <input type="submit" value="Demander differé" name="differe" /> </p>';
+    require_once('gabaritPaiements.php');
+}
 
-function afficherPlanning($nomEmp,$interventions){
+function afficherPaiements(){
+    $contenuAffichage="Aucune donnée saisie";
+    require_once("gabaritPaiements.php");
+}
+
+function afficherPaiementsOK(){
+    $contenuAffichage="Votre intervention a été payé";
+    require_once("gabaritPaiements.php");
+}
+
+function afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff){
+    $restant=$montantMax-$sommeDeTout;
+    $contenuAffichage="<h5>Recapitulatif :</h5>
+        Montant maximum autorisé : $montantMax<br/>
+        Demande de différé: $sommeDemande<br/>
+        Somme déjà en différé : $sommeDejaDiff<br/>
+        <p> Total différé : $sommeDeTout<p>
+        <p>Montant restant possible: <div id='montantMax'>$restant($montantMax-$sommeDeTout)</div></p><p><div id='montantMax'>Votre intervention a été mise en différée</div></p>";
+        require_once("gabaritPaiements.php");
+}
+
+function afficherPlanning($mecanicien,$interventions){
     setlocale(LC_TIME, "French");
     $contenuAffichage=
     '<id class="stockage"> <input type="text" name="nomEmp" value='. $nomEmp.' /> </id>
@@ -110,6 +141,7 @@ function afficherPlanning($nomEmp,$interventions){
     require_once("gabaritMecanicien.php");
 }
 
+
 function afficherErreur($erreur){
     $contenuAffichage=$erreur.'</br><a href="garage.php">Revenir à l\'accueil</a>';
     require_once('gabarit.php');
@@ -118,6 +150,11 @@ function afficherErreur($erreur){
 function afficherErreurControleEmploye($erreur){
     $contenuAffichage=$erreur;
     require_once('gabaritControleEmploye.php');
+}
+
+function afficherErreurPaiement($erreur){
+    $contenuAffichage=$erreur;
+    require_once('gabaritPaiements.php');
 }
 
 function controleEmploye(){
@@ -161,28 +198,28 @@ function rechercheEmploye($employe){
     require_once('gabaritControleEmploye.php');
 
 }
+function ajouterEmployeOK(){
+    $contenuAffichage='Votre employé à été ajouté à la base ! Félicitations !';
+    require_once('gabaritControleEmploye.php');
+}
+function supprimerEmployeOK(){
+    $contenuAffichage='Votre employé à été supprimé ! Félicitations !';
+    require_once('gabaritControleEmploye.php');
+}
 
- function ajouterEmployeOK(){
-      $contenuAffichage='Votre employé à été ajouté à la base ! Félicitations !';
-       require_once('gabaritControleEmploye.php');
- }
- function supprimerEmployeOK(){
-      $contenuAffichage='Votre employé à été supprimé ! Félicitations !';
-       require_once('gabaritControleEmploye.php');
- }
 function modifierEmployeOK(){
-      $contenuAffichage='Votre employé à été modifié ! Félicitations !';
-       require_once('gabaritControleEmploye.php');
- }
+    $contenuAffichage='Votre employé à été modifié ! Félicitations !';
+    require_once('gabaritControleEmploye.php');
+}
 
 #INTERVENTIONS
 
 function controleTypeIntervention(){
-     $contenuAffichage="";
+    $contenuAffichage="";
     require_once('gabaritControleTypeIntervention.php');
 }
 function afficherErreurControleTypeIntevention($erreur){
-     $contenuAffichage=$erreur;
+    $contenuAffichage=$erreur;
     require_once('gabaritControleTypeIntervention.php');
 }
 
@@ -197,7 +234,7 @@ function rechercheTypeIntervention($intervention){
 }
 
 
-function afficherToutesLesTypesInterventions($interventions){
+function afficherTousLesTypesInterventions($interventions){
     $contenuAffichage="";
     foreach($interventions as $value){
         $contenuAffichage.='<p><label><input type="checkbox" name="'.$value->nomType.'"/></label><input type="text" value="'.$value->nomType.'" readonly="readonly"/></p></br>';
@@ -206,15 +243,15 @@ function afficherToutesLesTypesInterventions($interventions){
     require_once('gabaritControleTypeIntervention.php');
 }
 
- function ajouterTypeInterventionOK(){
-      $contenuAffichage='Votre intervention à été ajouté à la base ! Félicitations !';
-     require_once('gabaritControleTypeIntervention.php');
- }
- function supprimerTypeInterventionOK(){
-      $contenuAffichage='Votre intervention à été supprimé ! Félicitations !';
-      require_once('gabaritControleTypeIntervention.php');
- }
+function ajouterTypeInterventionOK(){
+    $contenuAffichage='Votre intervention à été ajouté à la base ! Félicitations !';
+    require_once('gabaritControleTypeIntervention.php');
+}
+function supprimerTypeInterventionOK(){
+    $contenuAffichage='Votre intervention à été supprimé ! Félicitations !';
+    require_once('gabaritControleTypeIntervention.php');
+}
 function modifierTypeInterventionOK(){
-      $contenuAffichage='Votre intervention à été modifié ! Félicitations !';
-      require_once('gabaritControleTypeIntervention.php');
- }
+    $contenuAffichage='Votre intervention à été modifié ! Félicitations !';
+    require_once('gabaritControleTypeIntervention.php');
+}

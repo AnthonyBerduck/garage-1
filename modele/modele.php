@@ -24,13 +24,19 @@
     $resultat->closeCursor();
   }
 
-  function paiement() {
-
+  function paiement($id) {
+   $connexion=getConnect();
+   $requete="UPDATE intervention SET etat='paye' WHERE num='$id'";
+   $resultat=$connexion->query($requete);
+   $resultat->closeCursor();
 
   }
 
-  function verifMontantDiffere(){
-
+  function differe($id){
+ $connexion=getConnect();
+   $requete="UPDATE intervention SET etat='differe' WHERE num='$id'";
+   $resultat=$connexion->query($requete);
+   $resultat->closeCursor();
   }
 
 
@@ -178,7 +184,7 @@
 
   function chercherToutesLesInterventions(){
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention";
+    $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $interventions=$resultat->fetchAll();
@@ -186,7 +192,7 @@
     return $interventions;
   }
 
- function chercherToutesLesTypesInterventions(){
+ function chercherTousLesTypesInterventions(){
     $connexion=getConnect();
     $requete="SELECT nomType,listeElem,montant FROM typeIntervention";
     $resultat=$connexion->query($requete);
@@ -195,6 +201,16 @@
     $resultat->closeCursor();
     return $interventions;
   }
+function chercherMontantMaxClient($idClient){
+    $connexion=getConnect();
+    $requete="SELECT montantMax FROM client WHERE id='$idClient'";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetch();
+    $resultat->closeCursor();
+    return $interventions;
+}
+
 
   function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes les interventions d'une journée d'un mécanicien
     $connexion=getConnect();
@@ -206,4 +222,46 @@
     $intervention=$resultat->fetchAll();
     $resultat->closeCursor();
     return $intervention;
+  }
+
+function chercherInterventionsClientPasPaye($idClient){
+    $connexion=getConnect();
+    $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$idClient AND (etat='differe' OR etat='attente')";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+function chercherInterventionsClient($id){
+    $connexion=getConnect();
+    $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where idClient=$id";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+
+function chercherInterventionsDiffereesClient($id){
+    $connexion=getConnect();
+    $requete="SELECT num,T1.nomType as nomType,nomEmp,idClient,dateIntervention,heure,montant FROM ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $interventions=$resultat->fetchAll();
+    $resultat->closeCursor();
+    return $interventions;
+  }
+
+
+  function chercherUnTypeInterventionMeca($nomType){
+    $connexion=getConnect();
+    $requete="SELECT nomType,listeElem,montant FROM typeIntervention where nomType='$nomType' ";
+    $resultat=$connexion->query($requete);
+    $resultat->setFetchMode(PDO::FETCH_OBJ);
+    $typeIntervention=$resultat->fetch();
+    $resultat->closeCursor();
+    return $typeIntervention;
   }

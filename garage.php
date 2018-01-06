@@ -44,10 +44,18 @@ try{
         ctlModifierTypeIntervention($_POST['nomType'],$_POST['listeElem'],$_POST['montant']);
     }else if(isset($_POST['boutonRechercheTypeIntervention'])){
         ctlRechercheTypeIntervention($_POST['valeurRecherche']);
-    }else if (isset($_POST['afficherToutesLesTypesInterventions'])){
-        ctlAfficherToutesLesTypesInterventions();
+    }else if (isset($_POST['afficherTousLesTypesInterventions'])){
+        ctlAfficherTousLesTypesInterventions();
     }else if (isset($_POST['supprimerTypeIntervention'])){
         ctlSupprimerTypeIntervention();
+    }else if(isset($_POST['paiements'])){
+        ctlAfficherPaiements();
+    }else if(isset($_POST['recherchePaiementClient'])){
+        ctlRecherchePaiementClient($_POST['idClientPaiement']);
+    }else if(isset($_POST['payer'])){
+        ctlPayer();
+    }else if(isset($_POST['differe'])){
+        ctlDiffere($_POST['idClient']);
 
     //BOUTONS Mecanicien
   }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
@@ -66,6 +74,8 @@ try{
         ctlErreurControleEmploye($e);
     }else if($e instanceof ExceptionControleTypeIntervention){
         ctlErreurControleTypeIntervention($e);
+    }else if($e instanceof ExceptionPaiement){
+        ctlErreurExceptionPaiement($e);
     }else{
         ctlErreur($e);
     }
