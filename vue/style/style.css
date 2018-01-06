@@ -24,3 +24,14 @@ table,td{
   border: 1px solid black;
 }
 
+#idClientInvisible{
+   visibility: hidden;
+}
+
+#attentionMontantMaxAtteint{
+    color: red;
+}
+
+#montantMax{
+    color: green;
+}

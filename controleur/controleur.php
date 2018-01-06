@@ -29,29 +29,82 @@ function ctlAfficherConnexion(){
     afficherConnexion();
 }
 
-function ctlAfficherPaiments(){
-    afficherPaiments();
+function ctlAfficherPaiements(){
+    afficherPaiements();
 }
 
 function ctlFinanceInterventions(){
     $interventions=chercherToutesLesInterventions();
-afficherFinanceInterventions($interventions);
+    afficherFinanceInterventions($interventions);
 }
 
 function ctlAccueil(){
     afficherAccueil();
 }
 
+function ctlPayer(){
+    foreach($_POST as $key => $val){
+        if(is_int($key)){
+            paiement($key);
+        }
+        afficherPaiementsOK();
+    }
+
+}
+function ctlDiffere($idClient){
+    $sommeDejaDiff=0;
+    $sommeDemande=0;
+    $interventionsPost=chercherTousLesTypesInterventions();
+    //on regarde tout le POST si le nom de notre interventions a été posté avec notre checkbox on ajoute son montant a la somme
+    foreach($_POST as $key => $val){
+        foreach($interventionsPost as $value){
+            if($val==$value->nomType){
+               $sommeDemande+=$value->montant;
+            }
+        }
+    }
+    $client=chercherMontantMaxClient($idClient);
+    //on cast en int car la requete nous donne un string //
+    $montantMax=(int)$client->montantMax;
+    $interventions=chercherInterventionsDiffereesClient($idClient);
+    foreach($interventions as $value){
+        $sommeDejaDiff+=(int)$value->montant;
+    }
+    $sommeDeTout=$sommeDejaDiff+$sommeDemande;
+    if($sommeDeTout>$montantMax){
+        throw new ExceptionPaiement("
+        <h5>Recapitulatif :</h5><p>
+        Montant maximum autorisé : <div id='montantMax'>$montantMax</div> <br/>
+        Montant total des différés contractés : $sommeDejaDiff <br/>
+        Demande de différé: $sommeDemande<br/>
+        <p>Total: <div id='attentionMontantMaxAtteint'>$sommeDeTout</div>($sommeDejaDiff+$sommeDemande) </p></p>
+        <p><div id='attentionMontantMaxAtteint'>Vous avez trop de paiement en differé, veuillez payer vos dettes dans un premier temps. Merci, la direction.</div> </p>");
+    }
+
+    foreach($_POST as $key => $val){
+        if(is_int($key)){
+            differe($key);
+        }
+        afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff);    
+    }
+}
+
 //FONCTIONS AGENT
 
 
-function ctlControleClient(){
-    controleClient();
+function  ctlRecherchePaiementClient($idClient){
+    if(!is_numeric($idClient)){
+        throw new ExceptionPaiement("Vous devez saisir un chiffre");
+    }
+    $interventions=chercherInterventionsClientPasPaye($idClient);
+    if(sizeOf($interventions)==0){
+        throw new ExceptionPaiement("Vous n'avez pas d'interventions ou elles sont toutes payées");
+    }
+    afficherPaiementsInterventions($interventions,$idClient);
 }
 
-
-function ctlAfficherPageAgent(){
-    afficherAgent();
+function ctlControleClient(){
+    controleClient();
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
@@ -64,17 +117,17 @@ function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
 }
 
 function ctlAfficherTousLesClients(){
-   $clients=chercherTousLesClients();
-   afficherTousLesClients($clients);
+    $clients=chercherTousLesClients();
+    afficherTousLesClients($clients);
 }
 
 function ctlAfficherModifierClient(){
-  foreach($_POST as $key => $value){
-    if(is_int($key) && !empty($_POST[$key])){
-      $client=chercherUnClient($key);
-      afficherModifierClient($client);
+    foreach($_POST as $key => $value){
+        if(is_int($key) && !empty($_POST[$key])){
+            $client=chercherUnClient($key);
+            afficherModifierClient($client);
+        }
     }
-  }
 }
 
 function ctlModifierClient($id,$nom,$prenom,$adresse,$numTel,$mail,$montantMax){
@@ -242,6 +295,20 @@ class ExceptionControleEmploye extends Exception{
 
 
 class ExceptionControleTypeIntervention extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
+}
+
+function ctlErreurExceptionPaiement($e){
+    afficherErreurPaiement($e);
+}
+
+
+class ExceptionPaiement extends Exception{
     public function __construct($message, $code = 0){
         parent::__construct($message, $code);
     }

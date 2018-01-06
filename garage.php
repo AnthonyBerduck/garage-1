@@ -49,7 +49,13 @@ try{
     }else if (isset($_POST['supprimerTypeIntervention'])){
         ctlSupprimerTypeIntervention();
     }else if(isset($_POST['paiements'])){
-        ctlAfficherPaiments();
+        ctlAfficherPaiements();
+    }else if(isset($_POST['recherchePaiementClient'])){
+        ctlRecherchePaiementClient($_POST['idClientPaiement']);
+    }else if(isset($_POST['payer'])){
+        ctlPayer();
+    }else if(isset($_POST['differe'])){
+        ctlDiffere($_POST['idClient']);
     }else{
         ctlAccueil();
     }
@@ -59,6 +65,8 @@ try{
         ctlErreurControleEmploye($e);
     }else if($e instanceof ExceptionControleTypeIntervention){
         ctlErreurControleTypeIntervention($e);
+    }else if($e instanceof ExceptionPaiement){
+        ctlErreurExceptionPaiement($e);
     }else{
         ctlErreur($e);
     }
