@@ -45,16 +45,8 @@ function ctlAfficherPageAgent(){
 }
 
 function ctlAfficherMecanicien($ligne){
-  $arrayTypeInter=array("");
   $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
-  $cpt=0;
-  var_dump($interventions);
-  foreach($interventions as $value){
-    $typeInter=chercherUnTypeInterventionMeca($value->nomType);
-    array_push($arrayTypeInter,$arrayTypeInter);
-    $cpt+=1;
-  }
-  afficherMecanicien($ligne,$interventions,$arrayTypeInter);
+  afficherMecanicien($ligne,$interventions);
   //afficherPlanning($mecanicien->nomEmploye,strftime("%Y-%m-%d"));
 }
 

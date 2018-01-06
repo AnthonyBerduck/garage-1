@@ -78,7 +78,7 @@ function afficherModifierClient($client){
 //FONCTIONS A TRIER
 
 
-function afficherMecanicien($mecanicien,$interventions,$arrayTypeInter){
+function afficherMecanicien($mecanicien,$interventions){
     setlocale(LC_TIME, "French");
     $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du'. strftime("%A %d %B").' : </p> </id>';
     $heure=4;
@@ -87,18 +87,19 @@ function afficherMecanicien($mecanicien,$interventions,$arrayTypeInter){
       $contenuAffichage .= '<td>'. $heure .'H </td>';
       $heure +=1;
     }
+    $contenuAffichage.= '</tr>';
     $heure=4;
     $cpt=0;
     while($heure!=22){
       $x=true;
+      var_dump($interventions);
       foreach($interventions as $value){
         var_dump($value->heure);
-        var_dump($heure);
-        if(($value->heure == heure){
-          $contenuAffichage .= '<td>'. $value->$nomType .' : '. $arrayTypeInter[$cpt] .'</td>';
-          $cpt+=1;
-          $x=false;
-        }
+        if($value->heure == $heure){
+            $contenuAffichage .= '<td>'. $value->nomType .' : '. $value->listeElem .'</td>';
+            $cpt+=1;
+            $x=false;
+          }
       }
       if($x){ // Si il n'y a pas d'intervention à cette heure.
         $contenuAffichage .= '<td> X </td>';
@@ -106,6 +107,7 @@ function afficherMecanicien($mecanicien,$interventions,$arrayTypeInter){
       }
     }
     $contenuAffichage .= '</tr> </table> </div>';
+    $contenuAffichage2 = "";
     require_once("gabaritMecanicien.php");
     // Pas de require_once (on doit charger $contenuAffichage2)
 }

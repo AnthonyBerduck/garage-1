@@ -198,7 +198,9 @@
 
   function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes les interventions d'une journée d'un mécanicien
     $connexion=getConnect();
-    $requete="SELECT num,nomType,nomEmp,idClient,date,heure FROM intervention where nomEmp='$nomEmp' and date='$date'";
+    $requete="SELECT T1.nomType as nomType,listeElem,nomEmp,dateIntervention,heure FROM
+      ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where nomEmp='$nomEmp' and dateIntervention='$date')
+        T1 JOIN typeintervention T2 on T1.nomType=T2.nomType)";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $intervention=$resultat->fetchAll();
