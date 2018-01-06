@@ -32,7 +32,7 @@
             <fieldset>
             <legend>Que voulez vous faire ?</legend>
             <p> <input type="submit" name="afficherClient" value="Afficher les clients" />
-              <input type="submit" name="syntheseClient" value="Obtenir la synthèse client" />
+              <input type="submit" name="afficherSyntheseClient" value="Obtenir la synthèse client" />
             </p>
             </fieldset>
             <?php echo $contenuAffichage ?>
