@@ -39,3 +39,6 @@ table,td{
 #montantMax{
     color: green;
 }
+.stockage{
+  visibility: hidden;
+}

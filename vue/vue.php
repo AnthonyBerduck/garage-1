@@ -131,11 +131,14 @@ function afficherPlanning($mecanicien){
     $contenuAffichage='CONNECTE MECANICIEN';
     require_once('gabarit.php');
 }
-function afficherMecanicien($mecanicien,$interventions){
+
+function afficherPlanning($mecanicien,$interventions){
     setlocale(LC_TIME, "French");
-    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du'. strftime("%A %d %B").' : </p> </id>';
+    $contenuAffichage=
+    '<form action=garage.php> <id class="stockage"> <input type="text" name="nomEmp" value='. $mecanicien->nomEmploye.' /> </id>
+    <id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du '. strftime("%A %d %B").' : </p> </id>';
     $heure=4;
-    $contenuAffichage = '<div> <table> <tr>';
+    $contenuAffichage.= '<div> <table> <tr>';
     while($heure!=22){
       $contenuAffichage .= '<td>'. $heure .'H </td>';
       $heure +=1;
@@ -145,22 +148,19 @@ function afficherMecanicien($mecanicien,$interventions){
     $cpt=0;
     while($heure!=22){
       $x=true;
-      var_dump($interventions);
       foreach($interventions as $value){
-        var_dump($value->heure);
         if($value->heure == $heure){
-            $contenuAffichage .= '<td>'. $value->nomType .' : '. $value->listeElem .'</td>';
+            $contenuAffichage .= '<td>'. $value->nomType .' : </br>'. $value->listeElem .'</td>';
             $cpt+=1;
             $x=false;
           }
       }
       if($x){ // Si il n'y a pas d'intervention à cette heure.
         $contenuAffichage .= '<td> X </td>';
-        $heure +=1;
       }
+      $heure +=1;
     }
     $contenuAffichage .= '</tr> </table> </div>';
-    $contenuAffichage2 = "";
     require_once("gabaritMecanicien.php");
     // Pas de require_once (on doit charger $contenuAffichage2)
 }
