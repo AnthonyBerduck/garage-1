@@ -53,9 +53,9 @@ try{
   }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
     ctlAfficherMecanicienDate($_POST['nomEmp']);
   }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
-    //ctlPlanningDate();
+    ctlAfficherAutreMecanicienDate();
   }else if(isset($_POST['formation'])){ // Ajouter une formation
-    //ctlPlanningDate();
+    ctlAjouterPlanning();
 
   }else{
       ctlAccueil();

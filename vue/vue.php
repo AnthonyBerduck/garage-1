@@ -78,11 +78,11 @@ function afficherModifierClient($client){
 //FONCTIONS A TRIER
 
 
-function afficherPlanning($mecanicien,$interventions){
+function afficherPlanning($nomEmp,$interventions){
     setlocale(LC_TIME, "French");
     $contenuAffichage=
-    '<form action=garage.php> <id class="stockage"> <input type="text" name="nomEmp" value='. $mecanicien->nomEmploye.' /> </id>
-    <id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du '. strftime("%A %d %B").' : </p> </id>';
+    '<id class="stockage"> <input type="text" name="nomEmp" value='. $nomEmp.' /> </id>
+    <id class=""> <p> Bienvenue '. $nomEmp.' . Voici votre planning du '. strftime("%A %d %B").' : </p> </id>';
     $heure=4;
     $contenuAffichage.= '<div> <table> <tr>';
     while($heure!=22){

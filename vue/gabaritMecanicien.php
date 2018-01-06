@@ -15,6 +15,7 @@
             </ul>
         </nav>
 
+        <form action=garage.php method="post">
 
         <?php
           echo $contenuAffichage;

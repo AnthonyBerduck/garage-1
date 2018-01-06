@@ -46,11 +46,11 @@ function ctlAfficherPageAgent(){
 
 function ctlAfficherMecanicien($ligne){
   $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
-  afficherPlanning($ligne,$interventions);
+  afficherPlanning($ligne->nomEmploye,$interventions);
 }
 
 function ctlAfficherMecanicienDate($ligne){
-  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,$_POST["date1"]);
+  $interventions=chercherToutesLesInterventionMecaJour($ligne,$_POST["date1"]);
   afficherPlanning($ligne,$interventions);
 }
 
