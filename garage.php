@@ -50,11 +50,16 @@ try{
         ctlSupprimerTypeIntervention();
 
     //BOUTONS Mecanicien
-    }else if(isset($POST_['date'])){
-      //ctlPlanningDate();
-    }else{
-        ctlAccueil();
-    }
+  }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
+    ctlAfficherMecanicienDate($_POST['nomEmp']);
+  }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
+    //ctlPlanningDate();
+  }else if(isset($_POST['formation'])){ // Ajouter une formation
+    //ctlPlanningDate();
+
+  }else{
+      ctlAccueil();
+  }
 
 }catch (Exception $e){
     if($e instanceof ExceptionControleEmploye){

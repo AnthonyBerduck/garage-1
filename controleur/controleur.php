@@ -46,13 +46,12 @@ function ctlAfficherPageAgent(){
 
 function ctlAfficherMecanicien($ligne){
   $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
-  afficherMecanicien($ligne,$interventions);
-  //afficherPlanning($mecanicien->nomEmploye,strftime("%Y-%m-%d"));
+  afficherPlanning($ligne,$interventions);
 }
 
-function ctlChercherUneInterventionMeca($mecanicien,$heure2){
-  $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2,strftime("%Y-%m-%d"));
-  return $inter;
+function ctlAfficherMecanicienDate($ligne){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,$_POST["date1"]);
+  afficherPlanning($ligne,$interventions);
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
