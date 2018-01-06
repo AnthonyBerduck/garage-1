@@ -13,7 +13,7 @@ function ctlConnexion(){
                         afficherAgent($ligne);
                         break;
                     case 'mecanicien':
-                        afficherMecanicien($ligne);
+                        ctlAfficherMecanicien($ligne);
                         break;
                     case 'directeur':
                         afficherDirecteur($ligne);
@@ -105,6 +105,17 @@ function  ctlRecherchePaiementClient($idClient){
 
 function ctlControleClient(){
     controleClient();
+}
+
+function ctlAfficherMecanicien($ligne){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
+  afficherMecanicien($ligne,$interventions);
+  //afficherPlanning($mecanicien->nomEmploye,strftime("%Y-%m-%d"));
+}
+
+function ctlChercherUneInterventionMeca($mecanicien,$heure2){
+  $inter=chercherUneInterventionMeca($mecanicien->nomEmploye,$heure2,strftime("%Y-%m-%d"));
+  return $inter;
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
@@ -219,7 +230,7 @@ function ctlControleTypeInterventions(){
 
 function ctlAjouterTypeIntervention($nomType,$listeElem,$montant){
     if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
-        $interventions=chercherToutesLesTypesInterventions();
+        $interventions=chercherTousLesTypesInterventions();
         foreach($interventions as $value){
             if($nomType==$value->nomType){
                 throw new ExceptionControleTypeIntervention("Une intervention du meme nom existe déjà, veuillez réessayer");
@@ -233,9 +244,9 @@ function ctlAjouterTypeIntervention($nomType,$listeElem,$montant){
     }
 }
 
-function ctlAfficherToutesLesTypesInterventions(){
-    $interventions=chercherToutesLesTypesInterventions();
-    afficherToutesLesTypesInterventions($interventions);
+function ctlAfficherTousLesTypesInterventions(){
+    $interventions=chercherTousLesTypesInterventions();
+    afficherTousLesTypesInterventions($interventions);
 }
 
 function ctlErreurControleTypeIntervention($erreur){
@@ -244,7 +255,7 @@ function ctlErreurControleTypeIntervention($erreur){
 
 function ctlRechercheTypeIntervention($valeurRecherche){
     $i=0;
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     foreach ($interventions as $ligne){
         if($valeurRecherche==$ligne->nomType){
             $i++;
@@ -258,7 +269,7 @@ function ctlRechercheTypeIntervention($valeurRecherche){
 
 
 function ctlModifierTypeIntervention($nomType,$listeElem,$montant){
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
         modifierTypeIntervention($nomType,$listeElem,$montant);
         modifierTypeInterventionOK();
@@ -269,7 +280,7 @@ function ctlModifierTypeIntervention($nomType,$listeElem,$montant){
 }
 
 function ctlSupprimerTypeIntervention(){
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     foreach ($interventions as $ligne){
         if(isset($_POST[$ligne->nomType])){
             supprimerTypeIntervention($ligne->nomType);

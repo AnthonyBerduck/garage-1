@@ -79,18 +79,6 @@ function afficherModifierClient($client){
 //FONCTIONS A TRIER
 
 
-function afficherMecanicien($mecanicien){
-    setlocale(LC_TIME, "French");
-    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du
-                          '. strftime("%A %d %B").' : </p>
-                          <form action="garage.php" method="post">
-                            <p class="bouton"> <input type="submit" value="Voir le planning d\'un autre mécanicien" name="visuPlanning"/> </p>
-                            <p class="bouton"> <input type="submit" value="Ajouter Une Formation" /> </p>
-                          </form>
-                        </id>';
-    require_once('gabaritMecanicien.php');
-}
-
 function afficherPaiementsInterventions($interventions,$idClient){
     $contenuAffichage='<input type="text" name="idClient" id="idClientInvisible" value="'.$idClient.'" readonly="readonly"/>';
     foreach($interventions as $value){
@@ -143,11 +131,46 @@ function afficherPlanning($mecanicien){
     $contenuAffichage='CONNECTE MECANICIEN';
     require_once('gabarit.php');
 }
+function afficherMecanicien($mecanicien,$interventions){
+    setlocale(LC_TIME, "French");
+    $contenuAffichage='<id class=""> <p> Bienvenue '. $mecanicien->nomEmploye.' . Voici votre planning du'. strftime("%A %d %B").' : </p> </id>';
+    $heure=4;
+    $contenuAffichage = '<div> <table> <tr>';
+    while($heure!=22){
+      $contenuAffichage .= '<td>'. $heure .'H </td>';
+      $heure +=1;
+    }
+    $contenuAffichage.= '</tr>';
+    $heure=4;
+    $cpt=0;
+    while($heure!=22){
+      $x=true;
+      var_dump($interventions);
+      foreach($interventions as $value){
+        var_dump($value->heure);
+        if($value->heure == $heure){
+            $contenuAffichage .= '<td>'. $value->nomType .' : '. $value->listeElem .'</td>';
+            $cpt+=1;
+            $x=false;
+          }
+      }
+      if($x){ // Si il n'y a pas d'intervention à cette heure.
+        $contenuAffichage .= '<td> X </td>';
+        $heure +=1;
+      }
+    }
+    $contenuAffichage .= '</tr> </table> </div>';
+    $contenuAffichage2 = "";
+    require_once("gabaritMecanicien.php");
+    // Pas de require_once (on doit charger $contenuAffichage2)
+}
+
 
 function afficherErreur($erreur){
     $contenuAffichage=$erreur.'</br><a href="garage.php">Revenir à l\'accueil</a>';
     require_once('gabarit.php');
 }
+
 function afficherErreurControleEmploye($erreur){
     $contenuAffichage=$erreur;
     require_once('gabaritControleEmploye.php');
@@ -197,6 +220,7 @@ function rechercheEmploye($employe){
 
     $contenuAffichage.='</select></p><input type="submit" value="Modifier employe" name="modifierEmploye"/></fieldset>';
     require_once('gabaritControleEmploye.php');
+
 }
 function ajouterEmployeOK(){
     $contenuAffichage='Votre employé à été ajouté à la base ! Félicitations !';
@@ -206,6 +230,7 @@ function supprimerEmployeOK(){
     $contenuAffichage='Votre employé à été supprimé ! Félicitations !';
     require_once('gabaritControleEmploye.php');
 }
+
 function modifierEmployeOK(){
     $contenuAffichage='Votre employé à été modifié ! Félicitations !';
     require_once('gabaritControleEmploye.php');
@@ -233,7 +258,7 @@ function rechercheTypeIntervention($intervention){
 }
 
 
-function afficherToutesLesTypesInterventions($interventions){
+function afficherTousLesTypesInterventions($interventions){
     $contenuAffichage="";
     foreach($interventions as $value){
         $contenuAffichage.='<p><label><input type="checkbox" name="'.$value->nomType.'"/></label><input type="text" value="'.$value->nomType.'" readonly="readonly"/></p></br>';

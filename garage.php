@@ -44,8 +44,8 @@ try{
         ctlModifierTypeIntervention($_POST['nomType'],$_POST['listeElem'],$_POST['montant']);
     }else if(isset($_POST['boutonRechercheTypeIntervention'])){
         ctlRechercheTypeIntervention($_POST['valeurRecherche']);
-    }else if (isset($_POST['afficherToutesLesTypesInterventions'])){
-        ctlAfficherToutesLesTypesInterventions();
+    }else if (isset($_POST['afficherTousLesTypesInterventions'])){
+        ctlAfficherTousLesTypesInterventions();
     }else if (isset($_POST['supprimerTypeIntervention'])){
         ctlSupprimerTypeIntervention();
     }else if(isset($_POST['paiements'])){
@@ -56,6 +56,10 @@ try{
         ctlPayer();
     }else if(isset($_POST['differe'])){
         ctlDiffere($_POST['idClient']);
+
+    //BOUTONS Mecanicien
+    }else if(isset($POST_['date'])){
+      //ctlPlanningDate();
     }else{
         ctlAccueil();
     }
