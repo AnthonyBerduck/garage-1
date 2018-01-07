@@ -17,8 +17,8 @@
 <form action="garage.php" method="post">
                      <fieldset><legend>Recherche du client :</legend>
                          (Veuillez saisir son identitifiant)
-                <p><input type="text" name="idClientPaiement"/></p><p><input type="submit" value="Recherche" name="recherchePaiementClient"/> <input type="submit" value="Afficher les clients" name="afficherClientAgentPaiement"/></p></fieldset>
-                  <?php echo $contenuAffichage ?>
+                <p><input type="text" name="idClientPaiement"/></p><p><input type="submit" value="Recherche" name="recherchePaiementClient"/> <input type="submit" value="Afficher les clients" name="afficherClientAgentPaiement"/></p></fieldset><br/>
+ <?php echo $contenuAffichage ?>     
 
 
       </form>

@@ -13,8 +13,7 @@ function afficherDirecteur($directeur){
     $contenuAffichage='Bienvenue '.$directeur->nomEmploye.'
   <p><form action="garage.php" method="post">
   <button name="employe" type="submit" ><img src="vue/style/img/employee.svg" width="100" height="100"/><br/>Employés</button>
-  <button name="typeInterventions" type="submit" ><img src="vue/style/img/settings.svg" width="100" height="100"/><br/> Interventions</button>
-  <button name="necessaires" type="submit" ><img src="vue/style/img/edit.svg" width="100" height="100"/><br/>Nécessaires aux interventions</button></p>
+  <button name="typeInterventions" type="submit" ><img src="vue/style/img/settings.svg" width="100" height="100"/><br/> Interventions</button></p>
 ';
     $contenuAffichage.="</form>";
     require_once('gabarit.php');

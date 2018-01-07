@@ -25,7 +25,7 @@
                 <p class="bouton"> <input type="submit" value="Créer" name="ajouterTypeIntervention" /></p></fieldset>
             <p>
             <fieldset><legend>Recherche</legend>
-                <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Recherche une intervention pour la modifier" name="boutonRechercheTypeIntervention"/><input type="submit" value="Afficher toutes les interventions pour en supprimer" name="afficherTousLesTypesInterventions" /></p></fieldset>
+                <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Recherche une intervention pour la modifier" name="boutonRechercheTypeIntervention"/></p><p><input type="submit" value="Afficher toutes les interventions pour en supprimer" name="afficherTousLesTypesInterventions" /></p></fieldset>
 
         <fieldset><legend>Intervention</legend>
              <?php echo $contenuAffichage ?>
