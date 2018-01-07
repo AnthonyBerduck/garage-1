@@ -1,17 +1,21 @@
 html,body{
   height: 100%;
+  margin : auto;
 }
 
 body{
   text-align: center;
+  height: 100%;
+  margin : auto;
 }
 
-.bouton{
+
+.text,.bouton1,table{
   display: inline-block;
 }
 
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .banner{
@@ -22,4 +26,20 @@ ul {
 
 table,td{
   border: 1px solid black;
+}
+
+
+#idClientInvisible{
+   visibility: hidden;
+}
+
+#attentionMontantMaxAtteint{
+    color: red;
+}
+
+#montantMax{
+    color: green;
+}
+.stockage{
+  visibility: hidden;
 }

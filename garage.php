@@ -61,13 +61,31 @@ try{
         ctlModifierTypeIntervention($_POST['nomType'],$_POST['listeElem'],$_POST['montant']);
     }else if(isset($_POST['boutonRechercheTypeIntervention'])){
         ctlRechercheTypeIntervention($_POST['valeurRecherche']);
-    }else if (isset($_POST['afficherToutesLesTypesInterventions'])){
-        ctlAfficherToutesLesTypesInterventions();
+    }else if (isset($_POST['afficherTousLesTypesInterventions'])){
+        ctlAfficherTousLesTypesInterventions();
     }else if (isset($_POST['supprimerTypeIntervention'])){
         ctlSupprimerTypeIntervention();
-    }else{
-        ctlAccueil();
-    }
+    }else if(isset($_POST['paiements'])){
+        ctlAfficherPaiements();
+      }else if(isset($_POST['afficherClientAgentPaiement'])){
+        ctlAfficherClientAgentPaiement();
+    }else if(isset($_POST['recherchePaiementClient'])){
+        ctlRecherchePaiementClient($_POST['idClientPaiement']);
+    }else if(isset($_POST['payer'])){
+        ctlPayer();
+    }else if(isset($_POST['differe'])){
+        ctlDiffere($_POST['idClient']);
+
+    //BOUTONS Mecanicien
+  }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
+    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST["date1"]);
+  }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
+    ctlAfficherAutreMecanicienDate();
+  }else if(isset($_POST['formation'])){ // Ajouter une formation
+    ctlAjouterPlanning();
+  }else{
+      ctlAccueil();
+  }
 
 }catch (Exception $e){
     if($e instanceof ExceptionControleEmploye){
@@ -78,6 +96,8 @@ try{
           ctlErreurControleClient($e);
     }else if($e instanceof ExceptionControleRDV){
           ctlErreurControleRDV($e);
+    }else if($e instanceof ExceptionPaiement){
+        ctlErreurExceptionPaiement($e);
     }else{
         ctlErreur($e->getMessage());
     }

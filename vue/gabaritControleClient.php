@@ -34,8 +34,8 @@
             <legend>Que voulez vous faire ?</legend>
             <p> <input type="submit" name="afficherClient" value="Afficher les clients" />
               <input type="submit" name="afficherSyntheseClient" value="Obtenir la synthèse d'un client" />
-              <input type="submit" name="afficherRechercherClient" value="Rechercher un client" />
-              <input type="submit" name="afficherRechercherMecanicien" value="Rechercher planning d'un mécanicien"/>
+              <input type="submit" name="afficherRechercherClient" value="Rechercher un client" /></p>
+            <p>  <input type="submit" name="afficherRechercherMecanicien" value="Rechercher planning d'un mécanicien"/>
               <input type="submit" name="afficherMecanicienAgent" value="Liste des mécaniciens"/>
               <input type="submit" name="afficherClientAgent" value="Prendre rendez vous avec un client"/>
             </p>

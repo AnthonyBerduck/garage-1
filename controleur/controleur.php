@@ -13,7 +13,8 @@ function ctlConnexion(){
                         afficherAgent($ligne);
                         break;
                     case 'mecanicien':
-                        afficherMecanicien($ligne);
+                      $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
+                      afficherPlanning($ligne->nomEmploye,$interventions);
                         break;
                     case 'directeur':
                         afficherDirecteur($ligne);
@@ -25,18 +26,97 @@ function ctlConnexion(){
         throw new Exception("Login et/ou pwd invalides");
     }
 }
-function ctlAfficherConnexion(){
-    afficherConnexion();
+
+function ctlAfficherPaiements(){
+    afficherPaiements();
+}
+
+function ctlFinanceInterventions(){
+    $interventions=chercherToutesLesInterventions();
+    afficherFinanceInterventions($interventions);
 }
 
 function ctlAccueil(){
     afficherAccueil();
 }
 
+function ctlPayer(){
+    foreach($_POST as $key => $val){
+        if(is_int($key)){
+            paiement($key);
+        }
+        afficherPaiementsOK();
+    }
+
+}
+function ctlDiffere($idClient){
+    $sommeDejaDiff=0;
+    $sommeDemande=0;
+    $interventionsPost=chercherTousLesTypesInterventions();
+    //on regarde tout le POST si le nom de notre interventions a été posté avec notre checkbox on ajoute son montant a la somme
+    foreach($_POST as $key => $val){
+        foreach($interventionsPost as $value){
+            if($val==$value->nomType){
+               $sommeDemande+=$value->montant;
+            }
+        }
+    }
+    $client=chercherMontantMaxClient($idClient);
+    //on cast en int car la requete nous donne un string //
+    $montantMax=(int)$client->montantMax;
+    $interventions=chercherInterventionsDiffereesClient($idClient);
+    foreach($interventions as $value){
+        $sommeDejaDiff+=(int)$value->montant;
+    }
+    $sommeDeTout=$sommeDejaDiff+$sommeDemande;
+    if($sommeDeTout>$montantMax){
+        throw new ExceptionPaiement("
+        <h5>Recapitulatif :</h5><p>
+        Montant maximum autorisé : <div id='montantMax'>$montantMax</div> <br/>
+        Montant total des différés contractés : $sommeDejaDiff <br/>
+        Demande de différé: $sommeDemande<br/>
+        <p>Total: <div id='attentionMontantMaxAtteint'>$sommeDeTout</div>($sommeDejaDiff+$sommeDemande) </p></p>
+        <p><div id='attentionMontantMaxAtteint'>Vous avez trop de paiement en differé, veuillez payer vos dettes dans un premier temps. Merci, la direction.</div> </p>");
+    }
+
+    foreach($_POST as $key => $val){
+        if(is_int($key)){
+            differe($key);
+        }
+        afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff);
+    }
+}
+
 //FONCTIONS AGENT
+
+
+function  ctlRecherchePaiementClient($idClient){
+    if(!is_numeric($idClient)){
+        throw new ExceptionPaiement("Vous devez saisir un chiffre");
+    }
+    $interventions=chercherInterventionsClientPasPaye($idClient);
+    if(sizeOf($interventions)==0){
+        throw new ExceptionPaiement("Vous n'avez pas d'interventions ou elles sont toutes payées");
+    }
+    afficherPaiementsInterventions($interventions,$idClient);
+}
+
+
+
 
 function ctlControleClient(){
     controleClient();
+}
+//M
+
+function ctlAfficherMecanicien($ligne){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
+  afficherPlanning($ligne->nomEmploye,$interventions,strftime("%Y-%m-%d"));
+}
+
+function ctlAfficherMecanicienDate($ligne,$date){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne,$date);
+  afficherPlanning($ligne,$interventions,$date);
 }
 
 
@@ -51,18 +131,20 @@ function ctlAjouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$mo
     }
 }
 
+//Mecanicien
+
 function ctlAfficherTousLesClients(){
-   $clients=chercherTousLesClients();
-   afficherTousLesClients($clients);
+    $clients=chercherTousLesClients();
+    afficherTousLesClients($clients);
 }
 
 function ctlAfficherModifierClient(){
-  foreach($_POST as $key => $value){
-    if(is_int($key) && !empty($_POST[$key])){
-      $client=chercherUnClient($key);
-      afficherModifierClient($client);
+    foreach($_POST as $key => $value){
+        if(is_int($key) && !empty($_POST[$key])){
+            $client=chercherUnClient($key);
+            afficherModifierClient($client);
+        }
     }
-  }
 }
 
 function ctlModifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
@@ -118,10 +200,6 @@ function ctlRechercherClient($nom,$dateNaissance){
   }
 }
 
-function ctlControleRDV(){
-    controleRDV();
-}
-
 function ctlAfficherRechercherMecanicien(){
   afficherRechercherMecanicien();
 }
@@ -131,21 +209,26 @@ function ctlAfficherClientAgent(){
   afficherClientAgent($clients);
 }
 
+function ctlAfficherClientAgentPaiement(){
+  $clients=chercherTousLesClients();
+  afficherClientAgentPaiement($clients);
+}
+
 function ctlAfficherMecanicienAgent(){
   $mecaniciens=chercherTousLesMecaniciens();
   afficherMecanicienAgent($mecaniciens);
 }
 
 function ctlAfficherPlanningRDV($nom,$date){
-  $interventions=rechercheTypeIntervention($nom,$date);
-  afficherPlanningRDV($interventions);
+  $interventions=chercherToutesLesInterventionMecaJour($nom,$date);
+  afficherPlanningRDV($nom,$interventions,$date);
 }
 
 function ctlAfficherPrendreRDV(){
   foreach($_POST as $key => $value){
     if(is_int($key) && !empty($_POST[$key])){
       $client=chercherUnClient($key);
-      $interventions=chercherToutesLesTypesInterventions();
+      $interventions=chercherTousLesTypesInterventions();
       $mecaniciens=chercherTousLesMecaniciens();
       afficherPrendreRDV($client,$interventions,$mecaniciens);
     }
@@ -153,7 +236,10 @@ function ctlAfficherPrendreRDV(){
 }
 
 function ctlAjouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure){
-  if(!empty($nomType) && !empty($nomEmp) && !empty($idClient) && !empty($dateIntervention) &&!empty($heure)){
+  if(!empty($nomType) && !empty($nomEmp) && !empty($idClient) && !empty($dateIntervention) &&!empty($heure) && $heure>0 && $heure<24){
+    if($heure<4 || $heure>21){
+      throw new ExceptionControleRDV("Le mécanicien travaille seulement entre 4h et 22h, veuillez rentrer un rdv valable");
+    }
     $interventions=chercherToutesLesInterventions();
     $formations=chercherToutesLesFormations();
     $cpt=0;
@@ -183,6 +269,21 @@ function ctlErreurControleClient($erreur){
 function ctlErreurControleRDV($erreur){
   afficherErreurControleRDV($erreur);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #FONCTIONS DIRECTEUR
 
@@ -251,6 +352,16 @@ function ctlAfficherTousLesEmployes(){
     afficherTousLesEmployes($employe);
 }
 
+
+
+
+
+
+
+
+
+
+
 #INTERVENTIONS
 
 function ctlControleTypeInterventions(){
@@ -261,7 +372,7 @@ function ctlControleTypeInterventions(){
 
 function ctlAjouterTypeIntervention($nomType,$listeElem,$montant){
     if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
-        $interventions=chercherToutesLesTypesInterventions();
+        $interventions=chercherTousLesTypesInterventions();
         foreach($interventions as $value){
             if($nomType==$value->nomType){
                 throw new ExceptionControleTypeIntervention("Une intervention du meme nom existe déjà, veuillez réessayer");
@@ -275,9 +386,9 @@ function ctlAjouterTypeIntervention($nomType,$listeElem,$montant){
     }
 }
 
-function ctlAfficherToutesLesTypesInterventions(){
-    $interventions=chercherToutesLesTypesInterventions();
-    afficherToutesLesTypesInterventions($interventions);
+function ctlAfficherTousLesTypesInterventions(){
+    $interventions=chercherTousLesTypesInterventions();
+    afficherTousLesTypesInterventions($interventions);
 }
 
 function ctlErreurControleTypeIntervention($erreur){
@@ -286,7 +397,7 @@ function ctlErreurControleTypeIntervention($erreur){
 
 function ctlRechercheTypeIntervention($valeurRecherche){
     $i=0;
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     foreach ($interventions as $ligne){
         if($valeurRecherche==$ligne->nomType){
             $i++;
@@ -300,7 +411,7 @@ function ctlRechercheTypeIntervention($valeurRecherche){
 
 
 function ctlModifierTypeIntervention($nomType,$listeElem,$montant){
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     if(!empty($nomType) && !empty($listeElem) && !empty($montant)){
         modifierTypeIntervention($nomType,$listeElem,$montant);
         modifierTypeInterventionOK();
@@ -311,7 +422,7 @@ function ctlModifierTypeIntervention($nomType,$listeElem,$montant){
 }
 
 function ctlSupprimerTypeIntervention(){
-    $interventions=chercherToutesLesTypesInterventions();
+    $interventions=chercherTousLesTypesInterventions();
     foreach ($interventions as $ligne){
         if(isset($_POST[$ligne->nomType])){
             supprimerTypeIntervention($ligne->nomType);
@@ -355,6 +466,20 @@ class ExceptionControleRDV extends Exception{
 }
 
 class ExceptionControleTypeIntervention extends Exception{
+    public function __construct($message, $code = 0){
+        parent::__construct($message, $code);
+    }
+    public function __toString(){
+        return $this->message;
+    }
+}
+
+function ctlErreurExceptionPaiement($e){
+    afficherErreurPaiement($e);
+}
+
+
+class ExceptionPaiement extends Exception{
     public function __construct($message, $code = 0){
         parent::__construct($message, $code);
     }
