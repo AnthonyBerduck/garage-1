@@ -3,6 +3,7 @@ require_once("modele/modele.php");
 require_once("vue/vue.php");
 
 function ctlConnexion(){
+    $caSentPasBon=true;
   if(!empty($_POST['login']) && !empty($_POST['psw'])){
     $resultat = chercherTousLesEmployes();
     foreach ($resultat as $ligne){
@@ -11,18 +12,25 @@ function ctlConnexion(){
         switch ($cat) {
           case 'agent':
           afficherAgent($ligne);
+                   $caSentPasBon=false;
           break;
           case 'mecanicien':
           $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
           $formations=chercherToutesLesFormationsMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
           afficherPlanning($ligne->nomEmploye,$interventions,$formations,strftime("%Y-%m-%d"),chercherTousLesMecaniciens());
+                $caSentPasBon=false;
           break;
           case 'directeur':
           afficherDirecteur($ligne);
+                $caSentPasBon=false;
           break;
         }
       }
     }
+      if($caSentPasBon==true){
+          throw new Exception("Votre login et/ou votre password ne sont pas valides, veuillez reessayer merci : ");
+      }
+      
   }else{
     throw new Exception("Login et/ou pwd invalides");
   }
@@ -470,3 +478,4 @@ class ExceptionPaiement extends Exception{
     return $this->message;
   }
 }
+

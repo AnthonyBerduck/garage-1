@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,10 +21,10 @@
       <?php
       echo $contenuAffichage;
       ?>
-
+<fieldset>
       <p class="text">
         <input type="date" name="date"/> <input type="submit" value="Regarder" name="planningMeca"/>
-      </fieldset> </p>
+    </p></fieldset>
 
       <fieldset>
         <legend> Voir le planning d'une autre date </legend>
@@ -45,3 +46,4 @@
   </body>
 
 </html>
+
