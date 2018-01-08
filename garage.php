@@ -9,18 +9,35 @@ try{
     } else if (isset($_POST['client'])){
         ctlControleClient();
     } else if (isset($_POST['ajouterClient'])) {
-        ctlAjouterClient($_POST['nom'],$_POST['prenom'],$_POST['adresse'],$_POST['numTel'],$_POST['tel'],$_POST['mail'],$_POST['montantMax']);
+        ctlAjouterClient($_POST['nom'],$_POST['prenom'],$_POST['dateNaissance'],$_POST['adresse'],$_POST['numTel'],$_POST['mail'],$_POST['montantMax']);
     }else if (isset($_POST['supprimerClient'])){
         ctlSupprimerClient();
     } else if(isset($_POST['afficherClient'])){
         ctlAfficherTousLesClients();
-    }else if(isset($_POST['modifierClient'])){
+    }else if(isset($_POST['afficherModifierClient'])){
         ctlAfficherModifierClient();
     }else if(isset($_POST['modifierLeClient'])){
-          ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
+          ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['dateNaissanceClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
+    }else if(isset($_POST['afficherSyntheseClient'])){
+        ctlAfficherSyntheseClient();
     }else if(isset($_POST['syntheseClient'])){
-        ctlSyntheseClient();
-
+        ctlSyntheseClient($_POST['idSyntheseClient']);
+      }else if(isset($_POST['afficherRechercherClient'])){
+        ctlAfficherRechercherClient();
+      }else if(isset($_POST['rechercherClient'])){
+        ctlRechercherClient($_POST['nomClientRecherche'],$_POST['dateClientRecherche']);
+      }else if(isset($_POST['afficherRechercherMecanicien'])){
+        ctlAfficherRechercherMecanicien();
+      }else if(isset($_POST['afficherClientAgent'])){
+        ctlAfficherClientAgent();
+      }else if(isset($_POST['afficherMecanicienAgent'])){
+        ctlAfficherMecanicienAgent();
+      }else if(isset($_POST['rechercherPlanning'])){
+        ctlAfficherPlanningRDV($_POST['nomMecanicien'],$_POST['datePlanning']);
+      }elseif (isset($_POST['prendreRDVClient'])) {
+        ctlAfficherPrendreRDV();
+      }else if(isset($_POST['ajouterRDV'])){
+        ctlAjouterIntervention($_POST['intervention'],$_POST['nomEmploye'],$_POST['idClient'],$_POST['dateRDV'],$_POST['heureRDV']);
 //BOUTONS  DIRECTEUR
 
     }else if (isset($_POST['ajouterEmploye'])){
@@ -50,6 +67,8 @@ try{
         ctlSupprimerTypeIntervention();
     }else if(isset($_POST['paiements'])){
         ctlAfficherPaiements();
+      }else if(isset($_POST['afficherClientAgentPaiement'])){
+        ctlAfficherClientAgentPaiement();
     }else if(isset($_POST['recherchePaiementClient'])){
         ctlRecherchePaiementClient($_POST['idClientPaiement']);
     }else if(isset($_POST['payer'])){
@@ -58,13 +77,15 @@ try{
         ctlDiffere($_POST['idClient']);
 
     //BOUTONS Mecanicien
+  /*}else if(isset($_POST['detailsInter'])){
+    ctlAfficherDetail
+  }*/
   }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
-    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST['date1']);
+    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST["date1"]);
   }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
-    ctlAfficherAutreMecanicienDate();
+    ctlAfficherMecanicienDate($_POST['nomMeca'],$_POST["date"]);
   }else if(isset($_POST['formation'])){ // Ajouter une formation
-    ctlAjouterPlanning();
-
+    ctlAjouterFormation($_POST['nomEmp'],$_POST['date2'],$_POST['heureFormation']);
   }else{
       ctlAccueil();
   }
@@ -74,9 +95,13 @@ try{
         ctlErreurControleEmploye($e);
     }else if($e instanceof ExceptionControleTypeIntervention){
         ctlErreurControleTypeIntervention($e);
+    }else if($e instanceof ExceptionControleClient){
+          ctlErreurControleClient($e);
+    }else if($e instanceof ExceptionControleRDV){
+          ctlErreurControleRDV($e);
     }else if($e instanceof ExceptionPaiement){
         ctlErreurExceptionPaiement($e);
     }else{
-        ctlErreur($e);
+        ctlErreur($e->getMessage());
     }
 }

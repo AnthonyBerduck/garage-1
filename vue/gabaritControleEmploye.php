@@ -10,7 +10,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="garage.php">
-                    <img src="vue/style/img/icon-van.svg" width="30" height="30" >
+                    <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
                     Garage en Y</a></li>
             </ul>
         </nav>
@@ -20,7 +20,7 @@
                 <legend>Créer un nouvel employe</legend>
                 <p> <label for="nom">Nom :</label> <input type="text" id="nom" name="nomEmploye"/> </p>
                 <p> <label for="login">Login:</label> <input type="text" id="prenom" name="login"/></p>
-                <p> <label for="MotDePasse">Mot De Passe :</label> <input type="text" name="password"/> </p>
+                <p> <label for="MotDePasse">Mot De Passe :</label> <input type="password" name="password"/> </p>
                 <p><label for="categorie">Categorie</label><br/>
                     <select name="categorie" id="categorie">
                         <option value="mecanicien">Mecanicien</option>
@@ -30,8 +30,8 @@
                 <p class="bouton"> <input type="submit" value="Créer" name="ajouterEmploye" /></p></fieldset>
             <p>
             <fieldset><legend>Recherche</legend>
-                <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Recherche" name="boutonRecherche"/><input type="submit" value="Afficher Tous les Employes" name="afficherTousLesEmployes" /></p></fieldset>
-        
+                <p><input type="text" name="valeurRecherche"/></p><p><input type="submit" value="Rechercher pour modifier" name="boutonRecherche"/></p><p><input type="submit" value="Afficher Tous les Employes pour supprimer" name="afficherTousLesEmployes" /></p></fieldset>
+
         <fieldset><legend>Employés</legend>
              <?php echo $contenuAffichage ?>
             </fieldset>
