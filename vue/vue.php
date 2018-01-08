@@ -296,11 +296,11 @@ function afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff
         require_once("gabaritPaiements.php");
 }
 
-function afficherPlanning($mecanicien,$interventions,$date){
+function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesMeca){
     setlocale(LC_TIME, "French");
     $contenuAffichage=
     '<id class="stockage"> <input type="text" name="nomEmp" value="'.$mecanicien.'" /> </id>
-    <id class=""> <p> Bienvenue '.$mecanicien.' . Voici votre planning du '. $date.' : </p> </id>';
+    <id class=""> <p> Voici le planning de '.$mecanicien.' du '. $date.' : </p> </id>';
     $heure=4;
     $contenuAffichage.= '<div> <table> <tr>';
     while($heure!=22){
@@ -313,16 +313,27 @@ function afficherPlanning($mecanicien,$interventions,$date){
       $x=true;
       foreach($interventions as $value){
         if($value->heure == $heure){
-            $contenuAffichage .= '<td>'. $value->nomType .' : </br>'. $value->listeElem .'</td>';
-            $x=false;
+          $contenuAffichage .= '<td> <a href="garage.php" id="click"> '. $value->nomType .' : </br>'. $value->listeElem . '</a> </td>' ;
+          $x=false;
+        }else{
+          foreach ($formations as $value1) {
+            if($value1->heure == $heure){
+              $contenuAffichage .= '<td>formation ID : '. $value1->idFormation .'</td>';
+              $x=false;
+            }
           }
+        }
       }
       if($x){ // Si il n'y a pas d'intervention à cette heure.
         $contenuAffichage .= '<td> X </td>';
       }
       $heure +=1;
     }
-    $contenuAffichage .= '</tr> </table> </div>';
+    $contenuAffichage .= '</tr> </table> </div> <fieldset> <legend> Voir le planning d\'un autre mécanicien </legend> <form> <SELECT name="nomMeca" size="1"> ';
+    foreach ($tousLesMeca as $value) {
+      $contenuAffichage .= '<option> '. $value->nomEmploye;
+    }
+    $contenuAffichage .= ' </form>';
     require_once("gabaritMecanicien.php");
 }
 

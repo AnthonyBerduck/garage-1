@@ -1,29 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Garage</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet"  href="vue/style/style.css" />
-    </head>
+<head>
+  <title>Garage</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet"  href="vue/style/style.css" />
+</head>
 
-    <body>
-        <nav class="menu">
-            <ul>
-                <li><a href="garage.php">
-                    <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
-                    Garage en Y</a></li>
-            </ul>
-        </nav>
+<body>
+  <nav class="menu">
+    <ul>
+      <li><a href="garage.php">
+        <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
+        Garage en Y</a></li>
+      </ul>
+    </nav>
 
-        <form action=garage.php method="post">
-          <?php echo $contenuAffichage ?>
+    <form action=garage.php method="post">
 
-          <p class="text"> <input type="date" name="date1"/> </p>
-          <p class="bouton1"> <input type="submit" value="Voir le planning d'une autre date" name="planningDate"/> </p>
-          <p class="bouton"> <input type="submit" value="Voir le planning d'un autre mécanicien" name="planningMeca"/> </p>
-          <p class="bouton"> <input type="submit" value="Ajouter Une Formation" name="formation"/> </p>
-        </form>
+      <?php
+      echo $contenuAffichage;
+      ?>
 
-    </body>
+      <p class="text">
+        <input type="date" name="date"/> <input type="submit" value="Regarder" name="planningMeca"/>
+      </fieldset> </p>
+
+      <fieldset>
+        <legend> Voir le planning d'une autre date </legend>
+        <p class="text"> Date : <input type="date" name="date1"/> <input type="submit" value="Regarder" name="planningDate"/> </p>
+      </fieldset>
+
+      <fieldset>
+        <legend> Ajouter une formation </legend>
+        <p>
+          Date :
+          <input type="date" name="date2"/>
+          Heure :
+          <input type="number" name="heureFormation" max="21" min="4"/>
+          <input type="submit" value="Ajouter" name="formation"/>
+        </p>
+      </fieldset>
+    </form>
+
+  </body>
 
 </html>

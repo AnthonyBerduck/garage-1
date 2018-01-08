@@ -248,7 +248,7 @@ function chercherMontantMaxClient($idClient){
     $connexion=getConnect();
     $requete="SELECT T1.nomType,listeElem,heure FROM
       ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where nomEmp='$nomEmp' and dateIntervention='$date')
-        T1 JOIN typeintervention T2 on T1.nomType=T2.nomType)";
+        T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType)";
     $resultat=$connexion->query($requete);
     $resultat->setFetchMode(PDO::FETCH_OBJ);
     $intervention=$resultat->fetchAll();
@@ -306,3 +306,12 @@ function chercherInterventionsClientPasPaye($idClient){
     $resultat->closeCursor();
     return $formations;
   }
+function chercherToutesLesFormationsMecaJour($nomEmp,$date){
+  $connexion=getConnect();
+  $requete="SELECT * FROM formation where nomEmploye='$nomEmp' and date='$date'";
+  $resultat=$connexion->query($requete);
+  $resultat->setFetchMode(PDO::FETCH_OBJ);
+  $formationHeure=$resultat->fetchAll();
+  $resultat->closeCursor();
+  return $formationHeure;
+}
