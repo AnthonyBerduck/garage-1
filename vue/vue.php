@@ -109,7 +109,7 @@ function afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff
         require_once("gabaritPaiements.php");
 }
 
-function afficherPlanning($mecanicien,$interventions){
+function afficherPlanning($nomEmp,$interventions){
     setlocale(LC_TIME, "French");
     $contenuAffichage=
     '<id class="stockage"> <input type="text" name="nomEmp" value='. $nomEmp.' /> </id>

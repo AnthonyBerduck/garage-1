@@ -59,7 +59,7 @@ try{
 
     //BOUTONS Mecanicien
   }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
-    ctlAfficherMecanicienDate($_POST['nomEmp']);
+    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST['date1']);
   }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
     ctlAfficherAutreMecanicienDate();
   }else if(isset($_POST['formation'])){ // Ajouter une formation

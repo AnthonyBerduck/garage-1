@@ -85,8 +85,20 @@ function ctlDiffere($idClient){
         if(is_int($key)){
             differe($key);
         }
-        afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff);    
+        afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff);
     }
+}
+
+// FONCTIONS MECANICIENS
+
+function ctlAfficherMecanicien($ligne){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
+  afficherPlanning($ligne->nomEmploye,$interventions);
+}
+
+function ctlAfficherMecanicienDate($ligne,$date){
+  $interventions=chercherToutesLesInterventionMecaJour($ligne,$date);
+  afficherPlanning($ligne,$interventions);
 }
 
 //FONCTIONS AGENT
@@ -105,16 +117,6 @@ function  ctlRecherchePaiementClient($idClient){
 
 function ctlControleClient(){
     controleClient();
-}
-
-function ctlAfficherMecanicien($ligne){
-  $interventions=chercherToutesLesInterventionMecaJour($ligne->nomEmploye,strftime("%Y-%m-%d"));
-  afficherPlanning($ligne->nomEmploye,$interventions);
-}
-
-function ctlAfficherMecanicienDate($ligne){
-  $interventions=chercherToutesLesInterventionMecaJour($ligne,$_POST["date1"]);
-  afficherPlanning($ligne,$interventions);
 }
 
 function ctlAjouterClient($nom,$prenom,$adresse,$numTel,$mail,$montantMax){
