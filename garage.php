@@ -81,9 +81,9 @@ try{
     ctlAfficherDetail
   }*/
   }else if(isset($_POST['planningDate'])){ // Visionner le planning d'une autre date
-    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST["date1"]);
+    ctlAfficherMecanicienDate($_POST['nomEmp'],$_POST['date1']);
   }else if(isset($_POST['planningMeca'])){ // Visionner le planning d'une autre date d'un autre mécanicien
-    ctlAfficherMecanicienDate($_POST['nomMeca'],$_POST["date"]);
+    ctlAfficherMecanicienDate($_POST['nomMeca'],$_POST['date']);
   }else if(isset($_POST['formation'])){ // Ajouter une formation
     ctlAjouterFormation($_POST['nomEmp'],$_POST['date2'],$_POST['heureFormation']);
   }else{

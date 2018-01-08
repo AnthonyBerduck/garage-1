@@ -24,9 +24,9 @@ function modifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$
   $resultat->closeCursor();
 }
 
-function ajouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure){
+function ajouterIntervention($nomType,$NomEmploye,$idClient,$dateIntervention,$heure){
   $connexion=getConnect();
-  $requete="INSERT INTO intervention (nomType,nomEmp,idClient,dateIntervention,heure) VALUES ('$nomType','$nomEmp',$idClient,'$dateIntervention',$heure)";
+  $requete="INSERT INTO intervention (nomType,NomEmploye,idClient,dateIntervention,heure) VALUES ('$nomType','$NomEmploye',$idClient,'$dateIntervention',$heure)";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
@@ -49,7 +49,7 @@ function differe($id){
 
 #FONCTIONS DIRECTEUR
 
-function ajouterEmploye($nomEmploye,$login,$password,$categorie){
+function ajouterEmploye($NomEmploye,$login,$password,$categorie){
   $connexion=getConnect();
   $requete="INSERT INTO employe (nomEmploye,login,password,categorie) VALUES('$nomEmploye','$login','$password','$categorie')";
   $resultat=$connexion->query($requete);
@@ -206,7 +206,7 @@ function chercherUnDirecteur($nomEmploye){
 
 function chercherToutesLesInterventions(){
   $connexion=getConnect();
-  $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention";
+  $requete="SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -247,7 +247,7 @@ function chercherMontantMaxClient($idClient){
 function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes les interventions d'une journée d'un mécanicien
   $connexion=getConnect();
   $requete="SELECT T1.nomType,listeElem,heure FROM
-  ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where nomEmp='$nomEmp' and dateIntervention='$date')
+  ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure FROM intervention where nomEmploye='$nomEmp' and dateIntervention='$date')
   T1 JOIN typeintervention T2 on T1.nomType=T2.nomType)";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
@@ -258,7 +258,7 @@ function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes
 
 function chercherInterventionsClientPasPaye($idClient){
   $connexion=getConnect();
-  $requete="SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$idClient AND (etat='differe' OR etat='attente')";
+  $requete="SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$idClient AND (etat='differe' OR etat='attente')";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -279,7 +279,7 @@ function chercherUnTypeInterventionMeca($nomType){
 
 function chercherInterventionsClient($id){
   $connexion=getConnect();
-  $requete="SELECT num,T1.nomType as nomType,nomEmp,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id) T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id) T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -289,7 +289,7 @@ function chercherInterventionsClient($id){
 
 function chercherInterventionsDiffereesClient($id){
   $connexion=getConnect();
-  $requete="SELECT num,T1.nomType as nomType,nomEmp,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -309,7 +309,7 @@ function chercherToutesLesFormations(){
 
 function ajouterUneFormation($nomEmp,$date,$heure){
   $connexion=getConnect();
-  $requete="INSERT INTO formation (idFormation,nomEmp,date,heure) VALUES(NULL,'$nomEmp','$date','$heure')";
+  $requete="INSERT INTO formation (idFormation,nomEmploye,date,heure) VALUES(NULL,'$nomEmp','$date','$heure')";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
@@ -317,7 +317,7 @@ function ajouterUneFormation($nomEmp,$date,$heure){
 function chercherUneInterventionJourHeure($nomMeca,$date,$heure){
   $connexion=getConnect();
   $requete="SELECT T1.nomType,listeElem,heure FROM
-  ((SELECT num,nomType,nomEmp,idClient,dateIntervention,heure FROM intervention where nomEmp='$nomMeca' and dateIntervention='$date' and heure='$heure')
+  ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure FROM intervention where nomEmploye='$nomMeca' and dateIntervention='$date' and heure='$heure')
   T1 JOIN typeintervention T2 on T1.nomType=T2.nomType)";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
@@ -328,7 +328,7 @@ function chercherUneInterventionJourHeure($nomMeca,$date,$heure){
 
 function chercherFormationJourHeure($nomEmp,$date,$heure){
   $connexion=getConnect();
-  $requete="SELECT * FROM formation where nomEmp='$nomEmp' and date='$date' and heure='$heure'";
+  $requete="SELECT * FROM formation where nomEmploye='$nomEmp' and date='$date' and heure='$heure'";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $formationHeure=$resultat->fetch();
@@ -338,7 +338,7 @@ function chercherFormationJourHeure($nomEmp,$date,$heure){
 
 function chercherToutesLesFormationsMecaJour($nomEmp,$date){
   $connexion=getConnect();
-  $requete="SELECT * FROM formation where nomEmp='$nomEmp' and date='$date'";
+  $requete="SELECT * FROM formation where nomEmploye='$nomEmp' and date='$date'";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $formationHeure=$resultat->fetchAll();

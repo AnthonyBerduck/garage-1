@@ -313,15 +313,14 @@ function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesM
       $x=true;
       foreach($interventions as $value){
         if($value->heure == $heure){
-          $contenuAffichage .= '<td> <a href="garage.php" id="click"> '. $value->nomType .' : </br>'. $value->listeElem . '</a> </td>' ;
+          $contenuAffichage .= '<td> '. $value->nomType .' : </br>'. $value->listeElem . '</a> </td>' ;
           $x=false;
-        }else{
-          foreach ($formations as $value1) {
-            if($value1->heure == $heure){
-              $contenuAffichage .= '<td>formation ID : '. $value1->idFormation .'</td>';
-              $x=false;
-            }
-          }
+        }
+      }
+      foreach ($formations as $value1) {
+        if($value1->heure == $heure){
+          $contenuAffichage .= '<td>formation ID : '. $value1->idFormation .'</td>';
+          $x=false;
         }
       }
       if($x){ // Si il n'y a pas d'intervention à cette heure.
@@ -428,7 +427,6 @@ function afficherTousLesTypesInterventions($interventions){
     $contenuAffichage.='<input type="submit" value="Supprimer intervention" name="supprimerTypeIntervention"/></fieldset>';
     require_once('gabaritControleTypeIntervention.php');
 }
-
 
  function ajouterTypeInterventionOK(){
       $contenuAffichage='Votre intervention à été ajouté à la base ! Félicitations !';

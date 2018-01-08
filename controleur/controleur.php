@@ -91,23 +91,31 @@ function ctlDiffere($idClient){
 // FONCTIONS MECANICIENS
 
 function ctlAfficherMecanicienDate($nomMeca,$date){
-  $interventions=chercherToutesLesInterventionMecaJour($nomMeca,$date);
-  $formations=chercherToutesLesFormationsMecaJour($nomMeca,$date);
-  afficherPlanning($nomMeca,$interventions,$formations,$date,chercherTousLesMecaniciens());
+  if (!empty($date)){
+    $interventions=chercherToutesLesInterventionMecaJour($nomMeca,$date);
+    $formations=chercherToutesLesFormationsMecaJour($nomMeca,$date);
+    afficherPlanning($nomMeca,$interventions,$formations,$date,chercherTousLesMecaniciens());
+  }else{  // On affiche le planning du mécanicien du jour
+    $interventions=chercherToutesLesInterventionMecaJour($nomMeca,strftime("%Y-%m-%d"));
+    $formations=chercherToutesLesFormationsMecaJour($nomMeca,strftime("%Y-%m-%d"));
+    afficherPlanning($nomMeca,$interventions,$formations,strftime("%Y-%m-%d"),chercherTousLesMecaniciens());
+  }
 }
 
 function ctlAjouterFormation($nomMeca,$date,$heure){
+  $interventions=chercherToutesLesInterventionMecaJour($nomMeca,$date);
   if (!empty($date) && !empty($heure)){
-    $interventions=chercherToutesLesInterventionMecaJour($nomMeca,$date);
-    $formations=chercherToutesLesFormationsMecaJour($nomMeca,$date);
     $interventionHeure=chercherUneInterventionJourHeure($nomMeca,$date,$heure);
     $formationHeure=chercherFormationJourHeure($nomMeca,$date,$heure);
-    if(empty($interventionHeure) || empty($formationHeure)){
+    var_dump($interventionHeure);
+    var_dump($formationHeure);
+    if(empty($interventionHeure) && empty($formationHeure)){
       ajouterUneFormation($nomMeca,$date,$heure);
     }
+    $formations=chercherToutesLesFormationsMecaJour($nomMeca,$date);
     afficherPlanning($nomMeca,$interventions,$formations,$date,chercherTousLesMecaniciens()); // affiche le planning à la date de la formation pour voir le changement
   }else{
-    afficherPlanning($ligne->nomEmploye,$interventions,$formations,strftime("%Y-%m-%d"),chercherTousLesMecaniciens()); // affiche le planning du jour
+    afficherPlanning($nomMeca,$interventions,$formations,strftime("%Y-%m-%d"),chercherTousLesMecaniciens()); // affiche le planning du jour
   }
 }
 
