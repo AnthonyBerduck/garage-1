@@ -5,7 +5,7 @@ require_once('vue/vue.php');
 
 try{
     if(isset($_POST['connexion'])){
-        ctlConnexion();
+            ctlConnexion();
     } else if (isset($_POST['client'])){
         ctlControleClient();
     } else if (isset($_POST['ajouterClient'])) {
@@ -17,26 +17,26 @@ try{
     }else if(isset($_POST['afficherModifierClient'])){
         ctlAfficherModifierClient();
     }else if(isset($_POST['modifierLeClient'])){
-        ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['dateNaissanceClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
+          ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['dateNaissanceClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
     }else if(isset($_POST['afficherSyntheseClient'])){
         ctlAfficherSyntheseClient();
     }else if(isset($_POST['syntheseClient'])){
         ctlSyntheseClient($_POST['idSyntheseClient']);
-    }else if(isset($_POST['afficherRechercherClient'])){
+      }else if(isset($_POST['afficherRechercherClient'])){
         ctlAfficherRechercherClient();
-    }else if(isset($_POST['rechercherClient'])){
+      }else if(isset($_POST['rechercherClient'])){
         ctlRechercherClient($_POST['nomClientRecherche'],$_POST['dateClientRecherche']);
-    }else if(isset($_POST['afficherRechercherMecanicien'])){
+      }else if(isset($_POST['afficherRechercherMecanicien']) || isset($_POST['rechercherAutrePlanning'])){
         ctlAfficherRechercherMecanicien();
-    }else if(isset($_POST['afficherClientAgent'])){
+      }else if(isset($_POST['afficherClientAgent'])){
         ctlAfficherClientAgent();
-    }else if(isset($_POST['afficherMecanicienAgent'])){
+      }else if(isset($_POST['afficherMecanicienAgent'])){
         ctlAfficherMecanicienAgent();
-    }else if(isset($_POST['rechercherPlanning'])){
+      }else if(isset($_POST['rechercherPlanning'])){
         ctlAfficherPlanningRDV($_POST['nomMecanicien'],$_POST['datePlanning']);
-    }elseif (isset($_POST['prendreRDVClient'])) {
+      }elseif (isset($_POST['prendreRDVClient'])) {
         ctlAfficherPrendreRDV();
-    }else if(isset($_POST['ajouterRDV'])){
+      }else if(isset($_POST['ajouterRDV'])){
         ctlAjouterIntervention($_POST['intervention'],$_POST['nomEmploye'],$_POST['idClient'],$_POST['dateRDV'],$_POST['heureRDV']);
         //BOUTONS  DIRECTEUR
 

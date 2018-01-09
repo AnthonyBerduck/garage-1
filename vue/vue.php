@@ -133,13 +133,18 @@ function modifierClientOK(){
        require_once('gabaritControleClient.php');
  }
 
-function afficherRechercherMecanicien(){
+function afficherRechercherMecanicien($mecaniciens){
   $contenuAffichage='<fieldset>
     <legend>Rechercher un mécanicien</legend>
-      <p><label for="nom">Nom :</label> <input type="text" id="nom" name="nomMecanicien"/>
-        <label for="datePlanning">Date :</label> <input type="date" id="datePlanning" name="datePlanning"/></p>
-      <input type="submit" name="rechercherPlanning" value="Rechercher le planning"/></p>
-    </fieldset>';
+    <p> Nom du mécanicien :
+    <select name="nomMecanicien">';
+    foreach($mecaniciens as $value){
+        $contenuAffichage.='<option value="'.$value->nomEmploye.'">'.$value->nomEmploye.'</option> </br>';
+    };
+      $contenuAffichage.='</select>
+                          <label for="datePlanning">Date :</label> <input type="date" id="datePlanning" name="datePlanning"/></p>
+                          <input type="submit" name="rechercherPlanning" value="Rechercher le planning"/></p>
+                          </fieldset>';
     require_once('gabaritControleClient.php');
 }
 
@@ -168,8 +173,11 @@ function afficherMecanicienAgent($mecaniciens){
 }
 
 
- function afficherPlanningRDV($nom,$interventions,$date){
-   $contenuAffichage='<p>Planning de '.$nom.' du '. $date.' : </p>';
+ function afficherPlanningRDV($nom,$interventions,$formations,$date){
+   setlocale(LC_TIME, "French");
+   $contenuAffichage=
+   '<id class="stockage"> <input type="text" name="nomEmp" value="'.$nom.'" /> </id>
+   <id class=""> <p> Voici le planning de '.$nom.' du '. $date.' : </p> </id>';
    $heure=4;
    $contenuAffichage.= '<div> <table> <tr>';
    while($heure!=22){
@@ -182,16 +190,22 @@ function afficherMecanicienAgent($mecaniciens){
      $x=true;
      foreach($interventions as $value){
        if($value->heure == $heure){
-           $contenuAffichage .= '<td>'. $value->nomType .' : </br>'. $value->listeElem .'</td>';
-           $x=false;
-         }
+         $contenuAffichage .= '<td> '. $value->nomType .' : </br>'. $value->listeElem . '</a> </td>' ;
+         $x=false;
+       }
+     }
+     foreach ($formations as $value1) {
+       if($value1->heure == $heure){
+         $contenuAffichage .= '<td>formation ID : '. $value1->idFormation .'</td>';
+         $x=false;
+       }
      }
      if($x){ // Si il n'y a pas d'intervention à cette heure.
        $contenuAffichage .= '<td> X </td>';
      }
      $heure +=1;
    }
-   $contenuAffichage .= '</tr> </table> </div>';;
+   $contenuAffichage .= '</tr> </table> </div> <input type="submit" name="rechercherAutrePlanning" value="Chercher un autre planning"/>' ;
    require_once('gabaritControleClient.php');
  }
 
@@ -264,7 +278,6 @@ function afficherErreurControleRDV($erreur){
       $contenuAffichage=$erreur ;
       require_once('gabaritControleClient.php');
 }
-
 
 //FONCTIONS A TRIER
 function afficherMecanicien($mecanicien){

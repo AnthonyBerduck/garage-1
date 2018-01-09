@@ -127,7 +127,9 @@ function ctlAjouterFormation($nomMeca,$date,$heure){
   }
 }
 
-//FONCTIONS AGENT
+
+
+
 
 function  ctlRecherchePaiementClient($idClient){
   if(!is_numeric($idClient)){
@@ -139,6 +141,9 @@ function  ctlRecherchePaiementClient($idClient){
   }
   afficherPaiementsInterventions($interventions,$idClient);
 }
+
+
+//FONCTIONS AGENT
 
 function ctlControleClient(){
   controleClient();
@@ -153,20 +158,22 @@ function ctlAjouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$mo
   }
 }
 
-//Mecanicien
-
 function ctlAfficherTousLesClients(){
   $clients=chercherTousLesClients();
   afficherTousLesClients($clients);
 }
 
 function ctlAfficherModifierClient(){
+  $cpt=0;
   foreach($_POST as $key => $value){
     if(is_int($key) && !empty($_POST[$key])){
       $client=chercherUnClient($key);
       afficherModifierClient($client);
+      $cpt++;
     }
   }
+  if($cpt==0)
+   throw new ExceptionControleClient("Veuillez cocher une case");
 }
 
 function ctlModifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
@@ -215,7 +222,10 @@ function ctlAfficherRechercherClient(){
 function ctlRechercherClient($nom,$dateNaissance){
   if(!empty($nom) && !empty($dateNaissance)){
     $client=chercherUnClientNomDate($nom,$dateNaissance);
-    afficherModifierClient($client);
+    if($client==null)
+      throw new ExceptionControleClient("Le client n'existe pas");
+    else
+      afficherModifierClient($client);
   }
   else {
     throw new ExceptionControleClient("Un ou plusieurs champs sont invalides");
@@ -223,7 +233,8 @@ function ctlRechercherClient($nom,$dateNaissance){
 }
 
 function ctlAfficherRechercherMecanicien(){
-  afficherRechercherMecanicien();
+  $mecaniciens=chercherTousLesMecaniciens();
+  afficherRechercherMecanicien($mecaniciens);
 }
 
 function ctlAfficherClientAgent(){
@@ -242,8 +253,18 @@ function ctlAfficherMecanicienAgent(){
 }
 
 function ctlAfficherPlanningRDV($nom,$date){
-  $interventions=chercherToutesLesInterventionMecaJour($nom,$date);
-  afficherPlanningRDV($nom,$interventions,$date);
+  if(!empty($nom) && !empty($date)){
+  $mecanicien=chercherUnMecanicien($nom);
+  if($mecanicien==null)
+      throw new ExceptionControleRDV("Le mécanicien n'existe pas");
+      else{
+          $interventions=chercherToutesLesInterventionMecaJour($nom,$date);
+          $formations=chercherToutesLesFormationsMecaJour($nom,$date);
+          afficherPlanningRDV($nom,$interventions,$formations,$date);
+        }
+      }
+      else
+        throw new ExceptionControleRDV("Un ou plusieurs champs sont invalides");
 }
 
 function ctlAfficherPrendreRDV(){
@@ -253,8 +274,11 @@ function ctlAfficherPrendreRDV(){
       $interventions=chercherTousLesTypesInterventions();
       $mecaniciens=chercherTousLesMecaniciens();
       afficherPrendreRDV($client,$interventions,$mecaniciens);
+        $cpt++;
     }
   }
+  if($cpt==0)
+   throw new ExceptionControleRDV("Veuillez cocher une case");
 }
 
 function ctlAjouterIntervention($nomType,$nomEmp,$idClient,$dateIntervention,$heure){
