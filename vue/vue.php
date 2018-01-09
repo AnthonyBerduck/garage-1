@@ -299,7 +299,7 @@ function afficherDiffereOK($montantMax,$sommeDemande,$sommeDeTout,$sommeDejaDiff
 function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesMeca){
     setlocale(LC_TIME, "French");
     $contenuAffichage=
-    '<id class="stockage"> <input type="text" name="nomEmp" value="'.$mecanicien.'" /> </id>
+    '<id class="stockage"> <input type="text" name="nomEmp" value="'.$mecanicien.'" /> <input type="text" name="dateUtil" value="'.$date.'"/> </id>
     <id class=""> <p> Voici le planning de '.$mecanicien.' du '. $date.' : </p> </id>';
     $heure=4;
     $contenuAffichage.= '<div> <table> <tr>';
@@ -310,10 +310,10 @@ function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesM
     $contenuAffichage.= '</tr>';
     $heure=4;
     while($heure!=22){
-      $x=true;
+      $x=true; //: </br>'. $value->listeElem . '
       foreach($interventions as $value){
         if($value->heure == $heure){
-          $contenuAffichage .= '<td> '. $value->nomType .' : </br>'. $value->listeElem . '</a> </td>' ;
+          $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> </td>' ;
           $x=false;
         }
       }
@@ -336,6 +336,51 @@ function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesM
     require_once("gabaritMecanicien.php");
 }
 
+function afficherPlanningDetail($mecanicien,$interventions,$formations,$date,$tousLesMeca,$i,$client){
+    setlocale(LC_TIME, "French");
+    var_dump($date);
+    $contenuAffichage=
+    '<id class="stockage"> <input type="text" name="nomEmp" value="'.$mecanicien.'" /> <input type="text" name="dateUtil" value="'.$date.'"/> </id>
+    <id class=""> <p> Voici le planning de '.$mecanicien.' du '. $date.' : </p> </id>';
+    $heure=4;
+    $contenuAffichage.= '<div> <table> <tr>';
+    while($heure!=22){
+      $contenuAffichage .= '<td>'.$heure.'H </td>';
+      $heure +=1;
+    }
+    $contenuAffichage.= '</tr>';
+    $heure=4;
+    while($heure!=22){
+      $x=true; //
+      foreach($interventions as $value){
+        if($value->heure == $heure){
+          if($i==$heure){
+            $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> : </br> Liste élements : </br> '. $value->listeElem .' </br> idClient : '. $client->id .' </br> Nom : '.$client->nom.' </br> Prénom : '.$client->prenom.' </br> Téléphone : '.$client->numTel.'';
+          }else{
+            $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/>' ;
+          }
+          $contenuAffichage.= '</td>';
+          $x=false;
+        }
+      }
+      foreach ($formations as $value1) {
+        if($value1->heure == $heure){
+          $contenuAffichage .= '<td>formation ID : '. $value1->idFormation .'</td>';
+          $x=false;
+        }
+      }
+      if($x){ // Si il n'y a pas d'intervention à cette heure.
+        $contenuAffichage .= '<td> X </td>';
+      }
+      $heure +=1;
+    }
+    $contenuAffichage .= '</tr> </table> </div> <fieldset> <legend> Voir le planning d\'un autre mécanicien </legend> <form> <SELECT name="nomMeca" size="1"> ';
+    foreach ($tousLesMeca as $value) {
+      $contenuAffichage .= '<option> '. $value->nomEmploye;
+    }
+    $contenuAffichage .= ' </form>';
+    require_once("gabaritMecanicien.php");
+}
 
 function afficherErreur($erreur){
     $contenuAffichage=$erreur.'</br><a href="garage.php">Revenir à l\'accueil</a>';
