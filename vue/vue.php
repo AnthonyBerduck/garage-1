@@ -194,7 +194,7 @@ function syntheseClientAvecIntervention($client,$interventions,$interventionsDif
   $contenuAffichage.='<p>Les interventions réalisées : </p>
                         <ul>';
   foreach($interventions as $ligne){
-    $contenuAffichage.='<li>'.$ligne->nomType.' réalisée par '.$ligne->nomEmp.' a coûté '.$ligne->montant.' Le paiement de cette intervention est '.$ligne->etat.' </li>';
+    $contenuAffichage.='<li>'.$ligne->nomType.' réalisée par '.$ligne->nomEmploye.' a coûté '.$ligne->montant.' Le paiement de cette intervention est '.$ligne->etat.' </li>';
   }
     $montantDiffere=0;
     foreach($interventionsDifferees as $ligne){
@@ -438,7 +438,7 @@ function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesM
       $x=true; //: </br>'. $value->listeElem . '
       foreach($interventions as $value){
         if($value->heure == $heure){
-          $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> </td>' ;
+          $contenuAffichage .= '<td class="caseTableau"> <input class="caseTableau1" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> </td>' ;
           $x=false;
         }
       }
@@ -461,12 +461,10 @@ function afficherPlanning($mecanicien,$interventions,$formations,$date,$tousLesM
     require_once("gabaritMecanicien.php");
 }
 
-<<<<<<< HEAD
 #FONCTIONS GENERALES
-=======
+
 function afficherPlanningDetail($mecanicien,$interventions,$formations,$date,$tousLesMeca,$i,$client){
     setlocale(LC_TIME, "French");
-    var_dump($date);
     $contenuAffichage=
     '<id class="stockage"> <input type="text" name="nomEmp" value="'.$mecanicien.'" /> <input type="text" name="dateUtil" value="'.$date.'"/> </id>
     <id class=""> <p> Voici le planning de '.$mecanicien.' du '. $date.' : </p> </id>';
@@ -483,9 +481,9 @@ function afficherPlanningDetail($mecanicien,$interventions,$formations,$date,$to
       foreach($interventions as $value){
         if($value->heure == $heure){
           if($i==$heure){
-            $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> : </br> Liste élements : </br> '. $value->listeElem .' </br> idClient : '. $client->id .' </br> Nom : '.$client->nom.' </br> Prénom : '.$client->prenom.' </br> Téléphone : '.$client->numTel.'';
+            $contenuAffichage .= '<td> <input class="caseTableau1" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/> : </br> Liste élements : </br> '. $value->listeElem .' </br> idClient : '. $client->id .' </br> Nom : '.$client->nom.' </br> Prénom : '.$client->prenom.' </br> Téléphone : '.$client->numTel.'';
           }else{
-            $contenuAffichage .= '<td> <input class="caseTableau" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/>' ;
+            $contenuAffichage .= '<td class="caseTableau"> <input class="caseTableau1" type="submit" value="'. $value->nomType .'" name="'.$heure.'"/>' ;
           }
           $contenuAffichage.= '</td>';
           $x=false;
@@ -509,7 +507,6 @@ function afficherPlanningDetail($mecanicien,$interventions,$formations,$date,$to
     $contenuAffichage .= ' </form>';
     require_once("gabaritMecanicien.php");
 }
->>>>>>> master
 
 function afficherErreur($erreur){
     $contenuAffichage=$erreur.'</br><a href="garage.php">Revenir à l\'accueil</a>';
