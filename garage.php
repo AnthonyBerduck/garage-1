@@ -6,6 +6,7 @@ require_once('vue/vue.php');
 try{
   if(isset($_POST['connexion'])){
     ctlConnexion();
+    // Boutons Agent
   } else if (isset($_POST['client'])){
     ctlControleClient();
   } else if (isset($_POST['ajouterClient'])) {
@@ -26,7 +27,7 @@ try{
     ctlAfficherRechercherClient();
   }else if(isset($_POST['rechercherClient'])){
     ctlRechercherClient($_POST['nomClientRecherche'],$_POST['dateClientRecherche']);
-  }else if(isset($_POST['afficherRechercherMecanicien'])){
+  }else if(isset($_POST['afficherRechercherMecanicien']) || isset($_POST['rechercherAutrePlanning'])){
     ctlAfficherRechercherMecanicien();
   }else if(isset($_POST['afficherClientAgent'])){
     ctlAfficherClientAgent();

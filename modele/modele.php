@@ -79,7 +79,7 @@ function ajouterTypeIntervention($nomType,$listeElem,$montant){
   $connexion=getConnect();
   //addslashes permet d'accepter les apostrophes//
   $listeElem=addslashes($listeElem);
-  $requete="INSERT INTO typeIntervention (nomType,listeElem,montant) VALUES('$nomType','$listeElem','$montant')";
+  $requete="INSERT INTO typeintervention (nomType,listeElem,montant) VALUES('$nomType','$listeElem','$montant')";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
@@ -88,14 +88,14 @@ function modifierTypeIntervention($nomType,$listeElem,$montant){
   $connexion=getConnect();
   //addslashes permet d'accepter les apostrophes//
   $listeElem=addslashes($listeElem);
-  $requete="UPDATE typeIntervention SET nomType='$nomType', listeElem='$listeElem', montant='$montant' WHERE nomType='$nomType'";
+  $requete="UPDATE typeintervention SET nomType='$nomType', listeElem='$listeElem', montant='$montant' WHERE nomType='$nomType'";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
 
 function supprimerTypeIntervention($nomType){
   $connexion=getConnect();
-  $requete="DELETE FROM typeIntervention WHERE nomType='$nomType'";
+  $requete="DELETE FROM typeintervention WHERE nomType='$nomType'";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
@@ -214,7 +214,7 @@ function chercherToutesLesInterventions(){
 
 function chercherUneIntervention($nomType){
   $connexion=getConnect();
-  $requete="SELECT * FROM ((SELECT * FROM intervention WHERE nomType='$nomType') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+  $requete="SELECT * FROM ((SELECT * FROM intervention WHERE nomType='$nomType') T1 JOIN typeintervention T2 on T1.nomType=T2.nomType )";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $intervention=$resultat->fetch();
@@ -224,7 +224,7 @@ function chercherUneIntervention($nomType){
 
 function chercherTousLesTypesInterventions(){
   $connexion=getConnect();
-  $requete="SELECT nomType,listeElem,montant FROM typeIntervention";
+  $requete="SELECT nomType,listeElem,montant FROM typeintervention";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -267,7 +267,7 @@ function chercherInterventionsClientPasPaye($idClient){
 
 function chercherUnTypeInterventionMeca($nomType){
   $connexion=getConnect();
-  $requete="SELECT nomType,listeElem,montant FROM typeIntervention where nomType='$nomType' ";
+  $requete="SELECT nomType,listeElem,montant FROM typeintervention where nomType='$nomType' ";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $typeIntervention=$resultat->fetch();
@@ -277,7 +277,7 @@ function chercherUnTypeInterventionMeca($nomType){
 
 function chercherInterventionsClient($id){
   $connexion=getConnect();
-  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id) T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id) T1 JOIN typeintervention T2 on T1.nomType=T2.nomType )";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
@@ -287,7 +287,7 @@ function chercherInterventionsClient($id){
 
 function chercherInterventionsDiffereesClient($id){
   $connexion=getConnect();
-  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeIntervention T2 on T1.nomType=T2.nomType )";
+  $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeintervention T2 on T1.nomType=T2.nomType )";
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
   $interventions=$resultat->fetchAll();
