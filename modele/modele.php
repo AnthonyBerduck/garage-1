@@ -171,7 +171,6 @@ function chercherTousLesAgents(){
 //Cherche tous les directeurs dans la base puis retourne un tableau des direteurs
 
 function chercherTousLesDirecteurs(){
-
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE categorie='directeur'";
   $resultat=$connexion->query($requete);
@@ -184,7 +183,6 @@ function chercherTousLesDirecteurs(){
 //Cherche tous les mecaniciens dans la base puis retourne un tableau des mécaniciens
 
 function chercherTousLesMecaniciens(){
-
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE categorie='mecanicien'";
   $resultat=$connexion->query($requete);
@@ -382,7 +380,7 @@ function chercherToutesLesFormations(){
 
 function chercherUneInterventionJourHeure($nomMeca,$date,$heure){
   $connexion=getConnect();
-  $requete="SELECT T1.nomType,listeElem,heure FROM
+  $requete="SELECT T1.nomType,listeElem,heure,idClient FROM
   ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure FROM intervention where nomEmploye='$nomMeca' and dateIntervention='$date' and heure='$heure')
   T1 JOIN typeintervention T2 on T1.nomType=T2.nomType)";
   $resultat=$connexion->query($requete);
