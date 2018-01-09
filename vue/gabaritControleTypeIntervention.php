@@ -11,7 +11,7 @@
             <ul>
                 <li><a href="garage.php">
                     <img src="vue/style/img/ryuji.jpg" width="30" height="30" >
-                    Garage en Y</a></li>
+                    <h1>Garage en Y</h1></a></li>
             </ul>
         </nav>
         <h1>Modification des interventions</h1>

@@ -6,38 +6,42 @@ require_once('vue/vue.php');
 try{
     if(isset($_POST['connexion'])){
             ctlConnexion();
-    } else if (isset($_POST['client'])){
+        
+        //BOUTONS AGENT
+        
+    }else if (isset($_POST['client'])){
         ctlControleClient();
-    } else if (isset($_POST['ajouterClient'])) {
-        ctlAjouterClient($_POST['nom'],$_POST['prenom'],$_POST['dateNaissance'],$_POST['adresse'],$_POST['numTel'],$_POST['mail'],$_POST['montantMax']);
+    }else if (isset($_POST['ajouterClient'])) {
+        ctlAjouterClient($_POST['nom'],$_POST['prenom'],$_POST['dateNaissance'],$_POST['adresse'],$_POST['numTel'],$_POST['mail'],$_POST['montantMax']);//appelle 
     }else if (isset($_POST['supprimerClient'])){
         ctlSupprimerClient();
-    } else if(isset($_POST['afficherClient'])){
+    }else if(isset($_POST['afficherClient'])){
         ctlAfficherTousLesClients();
     }else if(isset($_POST['afficherModifierClient'])){
         ctlAfficherModifierClient();
     }else if(isset($_POST['modifierLeClient'])){
-          ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['dateNaissanceClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
+        ctlModifierClient($_POST['idClient'],$_POST['nomClient'],$_POST['prenomClient'],$_POST['dateNaissanceClient'],$_POST['adresseClient'],$_POST['numTelClient'],$_POST['mailClient'],$_POST['montantClient']);
     }else if(isset($_POST['afficherSyntheseClient'])){
         ctlAfficherSyntheseClient();
     }else if(isset($_POST['syntheseClient'])){
         ctlSyntheseClient($_POST['idSyntheseClient']);
-      }else if(isset($_POST['afficherRechercherClient'])){
+    }else if(isset($_POST['afficherRechercherClient'])){
         ctlAfficherRechercherClient();
-      }else if(isset($_POST['rechercherClient'])){
+    }else if(isset($_POST['rechercherClient'])){
         ctlRechercherClient($_POST['nomClientRecherche'],$_POST['dateClientRecherche']);
-      }else if(isset($_POST['afficherRechercherMecanicien']) || isset($_POST['rechercherAutrePlanning'])){
+    }else if(isset($_POST['afficherRechercherMecanicien']) || isset($_POST['rechercherAutrePlanning'])){
         ctlAfficherRechercherMecanicien();
-      }else if(isset($_POST['afficherClientAgent'])){
+    }else if(isset($_POST['afficherClientAgent'])){
         ctlAfficherClientAgent();
-      }else if(isset($_POST['afficherMecanicienAgent'])){
+    }else if(isset($_POST['afficherMecanicienAgent'])){
         ctlAfficherMecanicienAgent();
-      }else if(isset($_POST['rechercherPlanning'])){
+    }else if(isset($_POST['rechercherPlanning'])){
         ctlAfficherPlanningRDV($_POST['nomMecanicien'],$_POST['datePlanning']);
-      }elseif (isset($_POST['prendreRDVClient'])) {
+    }elseif (isset($_POST['prendreRDVClient'])) {
         ctlAfficherPrendreRDV();
-      }else if(isset($_POST['ajouterRDV'])){
+    }else if(isset($_POST['ajouterRDV'])){
         ctlAjouterIntervention($_POST['intervention'],$_POST['nomEmploye'],$_POST['idClient'],$_POST['dateRDV'],$_POST['heureRDV']);
+        
         //BOUTONS  DIRECTEUR
 
     }else if (isset($_POST['ajouterEmploye'])){
@@ -54,7 +58,6 @@ try{
         ctlAfficherTousLesEmployes();
     }else if (isset($_POST['ajouterTypeIntervention'])){
         ctlAjouterTypeIntervention($_POST['nomType'],$_POST['listeElem'],$_POST['montant']);
-
     }else if (isset($_POST['typeInterventions'])){
         ctlControleTypeInterventions();
     }else if(isset($_POST['modifierTypeIntervention'])){
@@ -75,7 +78,9 @@ try{
         ctlPayer();
     }else if(isset($_POST['differe'])){
         ctlDiffere($_POST['idClient']);
-        //BOUTONS Mecanicien
+        
+        
+        //BOUTONS MECANICIEN
         /*}else if(isset($_POST['detailsInter'])){
     ctlAfficherDetail
   }*/
@@ -85,9 +90,14 @@ try{
     ctlAfficherMecanicienDate($_POST['nomMeca'],$_POST['date']);
   }else if(isset($_POST['formation'])){ // Ajouter une formation
     ctlAjouterFormation($_POST['nomEmp'],$_POST['date2'],$_POST['heureFormation']);
+        
+        
+        
   }else{
       ctlAccueil();
   }
+    
+    
 }catch (Exception $e){
     if($e instanceof ExceptionControleEmploye){
         ctlErreurControleEmploye($e);

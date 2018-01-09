@@ -10,12 +10,16 @@ function getConnect(){
 
 #FONCTIONS AGENT
 
+//Ajoute un client dans la base
+
 function ajouterClient($nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
   $connexion=getConnect();
   $requete="INSERT INTO client (nom,prenom,dateNaissance,adresse,numTel,mail,montantMax) VALUES('$nom','$prenom','$dateNaissance','$adresse','$numTel','$mail',$montantMax)";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
+
+//Modifie un client dans la base
 
 function modifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$montantMax){
   $connexion=getConnect();
@@ -24,12 +28,16 @@ function modifierClient($id,$nom,$prenom,$dateNaissance,$adresse,$numTel,$mail,$
   $resultat->closeCursor();
 }
 
+//AJoute une intervention à la base
+
 function ajouterIntervention($nomType,$NomEmploye,$idClient,$dateIntervention,$heure){
   $connexion=getConnect();
   $requete="INSERT INTO intervention (nomType,NomEmploye,idClient,dateIntervention,heure) VALUES ('$nomType','$NomEmploye',$idClient,'$dateIntervention',$heure)";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
+
+//MOdifie l'état du paiement en payé d'une intervention id dans la base
 
 function paiement($id) {
   $connexion=getConnect();
@@ -38,6 +46,8 @@ function paiement($id) {
   $resultat->closeCursor();
 
 }
+
+//Modifie l'état du paiement en différé d'une intervnetion id dans la base
 
 function differe($id){
   $connexion=getConnect();
@@ -49,12 +59,16 @@ function differe($id){
 
 #FONCTIONS DIRECTEUR
 
+//Ajoute un employé dans la base
+
 function ajouterEmploye($NomEmploye,$login,$password,$categorie){
   $connexion=getConnect();
   $requete="INSERT INTO employe (nomEmploye,login,password,categorie) VALUES('$nomEmploye','$login','$password','$categorie')";
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
+
+//Modifie un employé dans la base
 
 function modifierEmploye($nomEmploye,$login,$password,$categorie){
   $connexion=getConnect();
@@ -63,6 +77,8 @@ function modifierEmploye($nomEmploye,$login,$password,$categorie){
   $resultat->closeCursor();
 }
 
+//Supprime un employé dans la base grace à son nomEmployé
+
 function supprimerEmploye($nomEmploye){
   $connexion=getConnect();
   $requete="DELETE FROM employe WHERE nomEmploye='$nomEmploye'";
@@ -70,11 +86,21 @@ function supprimerEmploye($nomEmploye){
   $resultat->closeCursor();
 }
 
+#MECANICIEN 
 
-#INTERVENTIONS
+//Ajoute une formation dans la base
 
+function ajouterUneFormation($nomEmp,$date,$heure){
+  $connexion=getConnect();
+  $requete="INSERT INTO formation (idFormation,nomEmploye,date,heure) VALUES(NULL,'$nomEmp','$date','$heure')";
+  $resultat=$connexion->query($requete);
+  $resultat->closeCursor();
+}
 
 #TYPEINTERVENTIONS
+
+//Ajoute un type intervention à la base
+
 function ajouterTypeIntervention($nomType,$listeElem,$montant){
   $connexion=getConnect();
   //addslashes permet d'accepter les apostrophes//
@@ -83,6 +109,8 @@ function ajouterTypeIntervention($nomType,$listeElem,$montant){
   $resultat=$connexion->query($requete);
   $resultat->closeCursor();
 }
+
+//Modifie un type intervention dans la base
 
 function modifierTypeIntervention($nomType,$listeElem,$montant){
   $connexion=getConnect();
@@ -93,6 +121,8 @@ function modifierTypeIntervention($nomType,$listeElem,$montant){
   $resultat->closeCursor();
 }
 
+//Modifie un type intervention dans la base
+
 function supprimerTypeIntervention($nomType){
   $connexion=getConnect();
   $requete="DELETE FROM typeintervention WHERE nomType='$nomType'";
@@ -101,6 +131,8 @@ function supprimerTypeIntervention($nomType){
 }
 
 #FONCTIONS RECHERCHE
+
+//Cherche tous les clients dans la base puis retourne un tableau des clients
 
 function chercherTousLesClients(){
   $connexion=getConnect();
@@ -112,6 +144,8 @@ function chercherTousLesClients(){
   return $client;
 }
 
+//Cherche tous les employés dans la base puis retourne un tableau des employés
+
 function chercherTousLesEmployes(){
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe";
@@ -122,6 +156,8 @@ function chercherTousLesEmployes(){
   return $employe;
 }
 
+//Cherche tous les agents dans la base et retourne un tableau des agents
+
 function chercherTousLesAgents(){
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE categorie='agent'";
@@ -131,6 +167,8 @@ function chercherTousLesAgents(){
   $resultat->closeCursor();
   return $agent;
 }
+
+//Cherche tous les directeurs dans la base puis retourne un tableau des direteurs
 
 function chercherTousLesDirecteurs(){
 
@@ -143,6 +181,8 @@ function chercherTousLesDirecteurs(){
   return $directeur;
 }
 
+//Cherche tous les mecaniciens dans la base puis retourne un tableau des mécaniciens
+
 function chercherTousLesMecaniciens(){
 
   $connexion=getConnect();
@@ -154,6 +194,8 @@ function chercherTousLesMecaniciens(){
   return $mecanicien;
 }
 
+//Cherche un client à partir de son id puis le retourne
+
 function chercherUnClient($id){
   $connexion=getConnect();
   $requete="SELECT id,nom,prenom,dateNaissance,adresse,numTel,mail,montantMax FROM client WHERE id=$id";
@@ -163,6 +205,8 @@ function chercherUnClient($id){
   $resultat->closeCursor();
   return $client;
 }
+
+//Cherche un client à partir de son nom et de sa date puis le retourne 
 
 function chercherUnClientNomDate($nom,$dateNaissance){
   $connexion=getConnect();
@@ -174,6 +218,8 @@ function chercherUnClientNomDate($nom,$dateNaissance){
   return $client;
 }
 
+//Cherche un mecanicien à partir de son nomEmploye puis le retourne
+
 function chercherUnMecanicien($nomEmploye){
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE nomEmploye='$nomEmploye' AND categorie='mecanicien'" ;
@@ -184,25 +230,31 @@ function chercherUnMecanicien($nomEmploye){
   return $mecanicien;
 }
 
+//Cherche un agent à partir de son nomEmploye puis le retourne
+
 function chercherUnAgent($nomEmploye){
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE nomEmploye='$nomEmploye' AND categorie='agent'" ;
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
-  $agent=$resultat->fetchAll();
+  $agent=$resultat->fetch();
   $resultat->closeCursor();
   return $agent;
 }
+
+//Cherche un directeur à partir de son nomEmploye puis le retourne
 
 function chercherUnDirecteur($nomEmploye){
   $connexion=getConnect();
   $requete="SELECT nomEmploye,login,password,categorie FROM employe WHERE nomEmploye='$nomEmploye' AND categorie='directeur'" ;
   $resultat=$connexion->query($requete);
   $resultat->setFetchMode(PDO::FETCH_OBJ);
-  $directeur=$resultat->fetchAll();
+  $directeur=$resultat->fetch();
   $resultat->closeCursor();
   return $directeur;
 }
+
+//Cherche toutes les interventions dans la base puis les retourne dans un tableau
 
 function chercherToutesLesInterventions(){
   $connexion=getConnect();
@@ -214,6 +266,8 @@ function chercherToutesLesInterventions(){
   return $interventions;
 }
 
+//Cherche un intervention à partir de son nomType et le retourne
+
 function chercherUneIntervention($nomType){
   $connexion=getConnect();
   $requete="SELECT * FROM ((SELECT * FROM intervention WHERE nomType='$nomType') T1 JOIN typeintervention T2 on T1.nomType=T2.nomType )";
@@ -224,6 +278,8 @@ function chercherUneIntervention($nomType){
   return $intervention;
 }
 
+//Cherche tous les types d'intervention puis les retourne dan un tableau
+
 function chercherTousLesTypesInterventions(){
   $connexion=getConnect();
   $requete="SELECT nomType,listeElem,montant FROM typeintervention";
@@ -233,6 +289,21 @@ function chercherTousLesTypesInterventions(){
   $resultat->closeCursor();
   return $interventions;
 }
+
+//Cheche un trype d'intervention à partir de son nomType puis le retourne
+
+function chercherUnTypeInterventionMeca($nomType){
+  $connexion=getConnect();
+  $requete="SELECT nomType,listeElem,montant FROM typeintervention where nomType='$nomType' ";
+  $resultat=$connexion->query($requete);
+  $resultat->setFetchMode(PDO::FETCH_OBJ);
+  $typeIntervention=$resultat->fetch();
+  $resultat->closeCursor();
+  return $typeIntervention;
+}
+
+//Cherche le montantMax d'un client à partir de son idCLient
+
 function chercherMontantMaxClient($idClient){
   $connexion=getConnect();
   $requete="SELECT montantMax FROM client WHERE id='$idClient'";
@@ -243,6 +314,7 @@ function chercherMontantMaxClient($idClient){
   return $interventions;
 }
 
+//Cherche toutes les interventions d'un jour pour un mécanicien associé à la liste d'éléments à fournir
 
 function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes les interventions d'une journée d'un mécanicien
   $connexion=getConnect();
@@ -256,6 +328,8 @@ function chercherToutesLesInterventionMecaJour($nomEmp,$date){ // Cherche toutes
   return $intervention;
 }
 
+//Cherche toutes les interventions non payées d'un client puis les retourne
+
 function chercherInterventionsClientPasPaye($idClient){
   $connexion=getConnect();
   $requete="SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$idClient AND (etat='differe' OR etat='attente')";
@@ -266,16 +340,7 @@ function chercherInterventionsClientPasPaye($idClient){
   return $interventions;
 }
 
-
-function chercherUnTypeInterventionMeca($nomType){
-  $connexion=getConnect();
-  $requete="SELECT nomType,listeElem,montant FROM typeintervention where nomType='$nomType' ";
-  $resultat=$connexion->query($requete);
-  $resultat->setFetchMode(PDO::FETCH_OBJ);
-  $typeIntervention=$resultat->fetch();
-  $resultat->closeCursor();
-  return $typeIntervention;
-}
+//Cherche les interventions d'un client à partir de son id puis les retourne dans un tableau
 
 function chercherInterventionsClient($id){
   $connexion=getConnect();
@@ -287,6 +352,8 @@ function chercherInterventionsClient($id){
   return $interventions;
 }
 
+//Cherche les interventions différées d'un client à partir de son id puis les retourne dans un tableau
+
 function chercherInterventionsDiffereesClient($id){
   $connexion=getConnect();
   $requete="SELECT num,T1.nomType as nomType,nomEmploye,idClient,dateIntervention,heure,montant,etat FROM ((SELECT num,nomType,nomEmploye,idClient,dateIntervention,heure,etat FROM intervention where idClient=$id AND etat='differe') T1 JOIN typeintervention T2 on T1.nomType=T2.nomType )";
@@ -296,6 +363,8 @@ function chercherInterventionsDiffereesClient($id){
   $resultat->closeCursor();
   return $interventions;
 }
+
+//Cherche toutes les formations de la base et les retourne dans un tableau
 
 function chercherToutesLesFormations(){
   $connexion=getConnect();
@@ -307,12 +376,9 @@ function chercherToutesLesFormations(){
   return $formations;
 }
 
-function ajouterUneFormation($nomEmp,$date,$heure){
-  $connexion=getConnect();
-  $requete="INSERT INTO formation (idFormation,nomEmploye,date,heure) VALUES(NULL,'$nomEmp','$date','$heure')";
-  $resultat=$connexion->query($requete);
-  $resultat->closeCursor();
-}
+
+
+//Cherche l'intervention d'un mecanicien à un jour et une heure donnés
 
 function chercherUneInterventionJourHeure($nomMeca,$date,$heure){
   $connexion=getConnect();
@@ -326,6 +392,8 @@ function chercherUneInterventionJourHeure($nomMeca,$date,$heure){
   return $intervention;
 }
 
+//Cherche la formation d'un mécanicien à un jour et une heure donnés
+
 function chercherFormationJourHeure($nomEmp,$date,$heure){
   $connexion=getConnect();
   $requete="SELECT * FROM formation where nomEmploye='$nomEmp' and date='$date' and heure='$heure'";
@@ -335,6 +403,8 @@ function chercherFormationJourHeure($nomEmp,$date,$heure){
   $resultat->closeCursor();
   return $formationHeure;
 }
+
+//Cherche toutes les formation d'un mécanicien à un jour donnée
 
 function chercherToutesLesFormationsMecaJour($nomEmp,$date){
   $connexion=getConnect();
