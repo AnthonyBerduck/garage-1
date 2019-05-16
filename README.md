@@ -17,7 +17,7 @@ créer, supprimer, modifier logins et mot de passe() -> agent, mécanicien, dire
 créer, supprimer, modifier -> liste des interventions possibles dans le garage </br>
 créer, supprimer, modifier -> liste des élements que le client doit fournir pour chaque intervention
 
-
+# Ce projet est à but éducatif
 
 
 
